@@ -6,11 +6,13 @@ import org.graalvm.polyglot.Value;
 
 public abstract class InfoPlist extends AbstractPolyglotAdapter {
 
-    public static InfoPlist create(String path) {
+    public static InfoPlist from(String path) {
         Context polyglot = Context.newBuilder().
                 allowAllAccess(true).build();
         polyglot.eval("ruby", "require 'app-info'");
-        return polyglot.eval("ruby", "AppInfo::InfoPlist.new('" + path + "')").as(InfoPlist.class);
+        InfoPlist infoPlist = polyglot.eval("ruby", "AppInfo::InfoPlist.new('" + path + "')").as(InfoPlist.class);
+        infoPlist.setContext(polyglot);
+        return infoPlist;
     }
 
     public abstract String version();

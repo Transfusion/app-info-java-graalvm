@@ -11,7 +11,7 @@ public abstract class IPA extends AbstractPolyglotAdapter {
         Context polyglot = Context.newBuilder().
                 allowAllAccess(true).build();
         polyglot.eval("ruby", "require 'app-info'");
-        IPA ipa = polyglot.eval("ruby", "AppInfo.parse('" + path + "')").as(IPA.class);
+        IPA ipa = polyglot.eval("ruby", "AppInfo::IPA.new('" + path + "')").as(IPA.class);
         ipa.setContext(polyglot);
         return ipa;
     }
