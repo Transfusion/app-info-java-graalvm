@@ -5,13 +5,17 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
 public abstract class MacOS extends AbstractPolyglotAdapter {
-    public static MacOS from(String path) {
-        Context polyglot = Context.newBuilder().
-                allowAllAccess(true).build();
+    public static MacOS from(Context polyglot, String path) {
         polyglot.eval("ruby", "require 'app-info'");
         MacOS macOS = polyglot.eval("ruby", "AppInfo::Macos.new('" + path + "')").as(MacOS.class);
         macOS.setContext(polyglot);
         return macOS;
+    }
+
+    public static MacOS from(String path) {
+        Context polyglot = Context.newBuilder().
+                allowAllAccess(true).build();
+        return MacOS.from(polyglot, path);
     }
 
     public abstract String info_path();

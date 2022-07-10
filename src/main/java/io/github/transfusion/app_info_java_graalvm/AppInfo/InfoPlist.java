@@ -6,13 +6,17 @@ import org.graalvm.polyglot.Value;
 
 public abstract class InfoPlist extends AbstractPolyglotAdapter {
 
-    public static InfoPlist from(String path) {
-        Context polyglot = Context.newBuilder().
-                allowAllAccess(true).build();
+    public static InfoPlist from(Context polyglot, String path) {
         polyglot.eval("ruby", "require 'app-info'");
         InfoPlist infoPlist = polyglot.eval("ruby", "AppInfo::InfoPlist.new('" + path + "')").as(InfoPlist.class);
         infoPlist.setContext(polyglot);
         return infoPlist;
+    }
+
+    public static InfoPlist from(String path) {
+        Context polyglot = Context.newBuilder().
+                allowAllAccess(true).build();
+        return InfoPlist.from(polyglot, path);
     }
 
     public abstract String version();
@@ -50,7 +54,7 @@ public abstract class InfoPlist extends AbstractPolyglotAdapter {
 
     /**
      * def icons
-     *
+     * <p>
      * \@icons ||= ICON_KEYS[device_type]
      * end
      */

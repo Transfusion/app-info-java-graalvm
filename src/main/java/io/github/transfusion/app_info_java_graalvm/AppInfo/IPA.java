@@ -7,13 +7,17 @@ import org.graalvm.polyglot.Value;
 
 public abstract class IPA extends AbstractPolyglotAdapter {
 
-    public static IPA from(String path) {
-        Context polyglot = Context.newBuilder().
-                allowAllAccess(true).build();
+    public static IPA from(Context polyglot, String path) {
         polyglot.eval("ruby", "require 'app-info'");
         IPA ipa = polyglot.eval("ruby", "AppInfo::IPA.new('" + path + "')").as(IPA.class);
         ipa.setContext(polyglot);
         return ipa;
+    }
+
+    public static IPA from(String path) {
+        Context polyglot = Context.newBuilder().
+                allowAllAccess(true).build();
+        return IPA.from(polyglot, path);
     }
 
     public abstract String info_path();

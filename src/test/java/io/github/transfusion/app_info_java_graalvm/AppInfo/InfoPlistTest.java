@@ -1,44 +1,56 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
+import org.graalvm.polyglot.Context;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
 
 public class InfoPlistTest {
+    private static Context ctx;
+
+    @BeforeAll
+    static void staticSetup() {
+        ctx = Context.newBuilder().
+                allowAllAccess(true).build();
+    }
+
+    @AfterAll
+    static void staticTeardown() {
+        ctx.close();
+        // sanity check to make sure that the context has indeed been properly closed
+        Assertions.assertThrows(IllegalStateException.class, () -> ctx.eval("ruby", "nil"));
+    }
+
     private IPA ipadIPA;
+
     private MacOS macOS;
 
     @BeforeEach
     void setup() {
         String resourceName = "apps/ipad.ipa";
         String absolutePath = getResourcesAbsolutePath(resourceName);
-        ipadIPA = IPA.from(absolutePath);
+        ipadIPA = IPA.from(InfoPlistTest.ctx, absolutePath);
 
         resourceName = "apps/macos.zip";
         absolutePath = getResourcesAbsolutePath(resourceName);
-        macOS = MacOS.from(absolutePath);
+        macOS = MacOS.from(InfoPlistTest.ctx, absolutePath);
     }
 
     @AfterEach
-    void tearDown() {
+    void teardown() {
         ipadIPA.clear();
-        ipadIPA.getContext().close();
-        // sanity check to make sure that the context has indeed been properly closed
-        Assertions.assertThrows(IllegalStateException.class, () -> ipadIPA.bundle_id());
-
         macOS.clear();
-        macOS.getContext().close();
-        Assertions.assertThrows(IllegalStateException.class, () -> macOS.size());
-
     }
 
     @Test
     void iPadIPA() {
         // test the "constructor"
-        InfoPlist infoPlist = InfoPlist.from(ipadIPA.info_path());
+        InfoPlist infoPlist = InfoPlist.from(InfoPlistTest.ctx, ipadIPA.info_path());
 
         Assertions.assertEquals(infoPlist.build_version(), "1");
         Assertions.assertEquals(infoPlist.release_version(), "1.0");
@@ -56,7 +68,7 @@ public class InfoPlistTest {
 
     @Test
     void macOS() {
-        InfoPlist infoPlist = InfoPlist.from(macOS.info_path());
+        InfoPlist infoPlist = InfoPlist.from(InfoPlistTest.ctx, macOS.info_path());
 
         Assertions.assertEquals(infoPlist.build_version(), "1");
         Assertions.assertEquals(infoPlist.release_version(), "1.0");
