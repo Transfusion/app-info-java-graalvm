@@ -1,6 +1,7 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Value;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -63,6 +64,13 @@ public class InfoPlistTest {
         Assertions.assertEquals(infoPlist.min_sdk_version(), "9.3");
         Assertions.assertEquals(infoPlist.min_os_version(), "9.3");
 
+        Value hashSubscriptLambda = infoPlist.getContext().eval("ruby", "-> recv, arg { recv[arg] }");
+        Value res = hashSubscriptLambda.execute(infoPlist.getValue(), "CFBundleVersion");
+        Assertions.assertEquals(res.asString(), "1");
+
+        res = hashSubscriptLambda.execute(infoPlist.getValue(), "CFBundleShortVersionString");
+        Assertions.assertEquals(res.asString(), "1.0");
+
         Assertions.assertArrayEquals(infoPlist.icons(), new String[]{"CFBundleIcons~ipad"});
     }
 
@@ -80,6 +88,13 @@ public class InfoPlistTest {
         Assertions.assertEquals(infoPlist.device_type(), "macOS");
         Assertions.assertEquals(infoPlist.min_system_version(), "11.3");
         Assertions.assertEquals(infoPlist.min_os_version(), "11.3");
+
+        Value hashSubscriptLambda = infoPlist.getContext().eval("ruby", "-> recv, arg { recv[arg] }");
+        Value res = hashSubscriptLambda.execute(infoPlist.getValue(), "CFBundleVersion");
+        Assertions.assertEquals(res.asString(), "1");
+
+        res = hashSubscriptLambda.execute(infoPlist.getValue(), "CFBundleShortVersionString");
+        Assertions.assertEquals(res.asString(), "1.0");
 
         Assertions.assertArrayEquals(infoPlist.icons(), new String[]{"CFBundleIconFile", "CFBundleIconName"});
     }
