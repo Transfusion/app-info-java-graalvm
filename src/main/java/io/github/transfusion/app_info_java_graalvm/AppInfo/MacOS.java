@@ -1,6 +1,7 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
+import io.github.transfusion.app_info_java_graalvm.Utilities;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
@@ -13,8 +14,7 @@ public abstract class MacOS extends AbstractPolyglotAdapter {
     }
 
     public static MacOS from(String path) {
-        Context polyglot = Context.newBuilder().
-                allowAllAccess(true).build();
+        Context polyglot = Utilities.createContext();
         return MacOS.from(polyglot, path);
     }
 

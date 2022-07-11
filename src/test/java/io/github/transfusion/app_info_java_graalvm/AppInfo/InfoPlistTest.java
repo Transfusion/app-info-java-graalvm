@@ -10,14 +10,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
+import static io.github.transfusion.app_info_java_graalvm.Utilities.createContext;
 
 public class InfoPlistTest {
     private static Context ctx;
 
     @BeforeAll
     static void staticSetup() {
-        ctx = Context.newBuilder().
-                allowAllAccess(true).build();
+        ctx = createContext();
     }
 
     @AfterAll

@@ -1,6 +1,7 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
+import io.github.transfusion.app_info_java_graalvm.Utilities;
 import org.graalvm.polyglot.Context;
 
 import java.util.List;
@@ -15,8 +16,7 @@ public abstract class MobileProvision extends AbstractPolyglotAdapter {
     }
 
     public static MobileProvision from(String path) {
-        Context polyglot = Context.newBuilder().
-                allowAllAccess(true).build();
+        Context polyglot = Utilities.createContext();
         return MobileProvision.from(polyglot, path);
     }
 
