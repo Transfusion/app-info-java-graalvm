@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
@@ -149,8 +150,7 @@ public class IPATest {
                 "a002ab5cca1491f25bd53cfa28947284877fa44d"});
         Assertions.assertEquals(subject.team_name(), "QYER Inc");
         Assertions.assertEquals(subject.profile_name(), "iOS Team Provisioning Profile: *");
-
-        Assertions.assertEquals(subject.expired_date(), LocalDateTime.parse("2017-07-27T17:44:49"));
+        Assertions.assertTrue(subject.expired_date().isEqual(ZonedDateTime.parse("2017-07-27T17:44:49+08:00")));
         Assertions.assertEquals(subject.distribution_name(), "iOS Team Provisioning Profile: * - QYER Inc");
 
         Assertions.assertTrue(subject.mobileprovision_question());

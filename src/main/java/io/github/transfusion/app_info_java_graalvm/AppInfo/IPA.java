@@ -6,7 +6,7 @@ import io.github.transfusion.app_info_java_graalvm.AppInfo.ipa_related.Plugin;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -120,7 +120,7 @@ public abstract class IPA extends AbstractPolyglotAdapter {
 
     public abstract String profile_name();
 
-    public abstract LocalDateTime expired_date();
+    public abstract ZonedDateTime expired_date();
 
     public abstract String distribution_name();
 
