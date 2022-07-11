@@ -172,4 +172,19 @@ public class IPATest {
         subject.clear();
         subject.getContext().close();
     }
+
+    @Test
+    void iPad() {
+        String resourceName = "apps/ipad.ipa";
+        String absolutePath = getResourcesAbsolutePath(resourceName);
+        IPA subject = IPA.from(absolutePath);
+
+        Assertions.assertEquals(subject.os(), "iOS");
+        Assertions.assertFalse(subject.iphone());
+        Assertions.assertTrue(subject.ipad());
+        Assertions.assertFalse(subject.universal());
+
+        subject.clear();
+        subject.getContext().close();
+    }
 }

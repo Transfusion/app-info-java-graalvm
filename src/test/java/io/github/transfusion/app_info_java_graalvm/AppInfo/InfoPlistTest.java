@@ -75,7 +75,7 @@ public class InfoPlistTest {
     }
 
     @Test
-    void macOS() {
+    void macOSApp() {
         InfoPlist infoPlist = InfoPlist.from(InfoPlistTest.ctx, macOS.info_path());
 
         Assertions.assertEquals(infoPlist.build_version(), "1");
