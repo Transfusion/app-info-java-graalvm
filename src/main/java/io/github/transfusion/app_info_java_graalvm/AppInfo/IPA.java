@@ -1,8 +1,13 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
+import io.github.transfusion.app_info_java_graalvm.AppInfo.ipa_related.Framework;
+import io.github.transfusion.app_info_java_graalvm.AppInfo.ipa_related.Plugin;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 public abstract class IPA extends AbstractPolyglotAdapter {
@@ -19,6 +24,8 @@ public abstract class IPA extends AbstractPolyglotAdapter {
                 allowAllAccess(true).build();
         return IPA.from(polyglot, path);
     }
+
+    public abstract String file();
 
     public abstract String info_path();
 
@@ -101,6 +108,73 @@ public abstract class IPA extends AbstractPolyglotAdapter {
 
     public abstract String device_type();
 
+
+//    def_delegators :mobileprovision, :devices, :team_name, :team_identifier,
+//            :profile_name, :expired_date
+
+    public abstract String[] devices();
+
+    public abstract String team_name();
+
+    public abstract String team_identifier();
+
+    public abstract String profile_name();
+
+    public abstract LocalDateTime expired_date();
+
+    public abstract String distribution_name();
+
+    public abstract String release_type();
+
+    public abstract String build_type();
+
+    public abstract String[] archs();
+
+    public abstract String[] architectures();
+
+    public List<IconHash> icons_(boolean uncrush) {
+        Context ctx = getContext();
+        Value lambda = ctx.eval("ruby", "-> recv, arg { recv.icons(uncrush: arg) }");
+
+        Value res = lambda.execute(getValue(), uncrush);
+        return (List<IconHash>) res.as(List.class);
+    }
+
+    public boolean stored_question() {
+        Context ctx = getContext();
+        Value v = ctx.eval("ruby", "-> recv { recv.stored? }");
+        Value res = v.execute(getValue());
+        return res.asBoolean();
+    }
+
+    public abstract List<Plugin> plugins();
+
+    public abstract List<Framework> frameworks();
+
+//    throws an exception as of Jul. 11 2022
+//    def hide_developer_certificates
+//      mobileprovision.delete('DeveloperCertificates') if mobileprovision?
+//    end
+
+    public abstract MobileProvision mobileprovision();
+
+    public boolean mobileprovision_question() {
+        Context ctx = getContext();
+        Value v = ctx.eval("ruby", "-> recv { recv.mobileprovision? }");
+        Value res = v.execute(getValue());
+        return res.asBoolean();
+    }
+
+    public abstract String mobileprovision_path();
+
+    public abstract Value metadata();
+
+    public boolean metadata_question() {
+        Context ctx = getContext();
+        Value v = ctx.eval("ruby", "-> recv { recv.metadata? }");
+        Value res = v.execute(getValue());
+        return res.asBoolean();
+    }
 
     public void clear() {
         Context ctx = getContext();
