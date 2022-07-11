@@ -9,7 +9,7 @@ public abstract class MobileProvision extends AbstractPolyglotAdapter {
 
     public static MobileProvision from(Context polyglot, String path) {
         polyglot.eval("ruby", "require 'app-info'");
-        MobileProvision mobileProvision = polyglot.eval("ruby", "AppInfo::IPA.new('" + path + "')").as(MobileProvision.class);
+        MobileProvision mobileProvision = polyglot.eval("ruby", "AppInfo::MobileProvision.new('" + path + "')").as(MobileProvision.class);
         mobileProvision.setContext(polyglot);
         return mobileProvision;
     }
