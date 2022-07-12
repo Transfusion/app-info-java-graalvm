@@ -67,8 +67,8 @@ public class IPATest {
         // it { expect(subject.mobileprovision).to be_kind_of AppInfo::MobileProvision }
         // same with this
 
-        Assertions.assertTrue(subject.plugins().isEmpty());
-        Assertions.assertTrue(subject.frameworks().isEmpty());
+        Assertions.assertEquals(0, subject.plugins().length);
+        Assertions.assertEquals(0, subject.frameworks().length);
 
         subject.clear();
         subject.getContext().close();
@@ -131,10 +131,78 @@ public class IPATest {
         Assertions.assertEquals(res.asString(), "QYER Inc");
         Assertions.assertEquals(subject.team_name(), "QYER Inc");
 
-        Assertions.assertTrue(subject.plugins().isEmpty());
-        Assertions.assertTrue(subject.frameworks().isEmpty());
+        Assertions.assertEquals(0, subject.plugins().length);
+        Assertions.assertEquals(0, subject.frameworks().length);
 
         subject.clear();
         subject.getContext().close();
     }
+
+    @Test
+    void embedded() {
+        String resourceName = "apps/embedded.ipa";
+        String absolutePath = getResourcesAbsolutePath(resourceName);
+        IPA subject = IPA.from(absolutePath);
+
+        Assertions.assertEquals(subject.os(), "iOS");
+        Assertions.assertFalse(subject.iphone());
+        Assertions.assertFalse(subject.ipad());
+        Assertions.assertTrue(subject.universal());
+
+        Assertions.assertEquals(subject.file(), absolutePath);
+        Assertions.assertEquals(subject.build_version(), "1");
+        Assertions.assertEquals(subject.release_version(), "1.0");
+        Assertions.assertEquals(subject.min_sdk_version(), "14.3");
+
+        Assertions.assertEquals(subject.name(), "Demo");
+        Assertions.assertEquals(subject.bundle_name(), "Demo");
+        Assertions.assertNull(subject.display_name());
+
+        Assertions.assertEquals(subject.identifier(), "com.icyleaf.test.Demo");
+        Assertions.assertEquals(subject.bundle_id(), "com.icyleaf.test.Demo");
+
+        Assertions.assertEquals(subject.device_type(), "Universal");
+
+        Assertions.assertArrayEquals(subject.archs(), new String[]{"arm64"});
+
+        Assertions.assertEquals(subject.release_type(), "Enterprise");
+        Assertions.assertEquals(subject.build_type(), "Enterprise");
+
+        Assertions.assertNull(subject.devices());
+
+        Assertions.assertTrue(subject.mobileprovision_question());
+        Assertions.assertEquals(2, subject.mobileprovision().developer_certs().size());
+
+        Assertions.assertTrue(subject.metadata().isNull());
+        Assertions.assertFalse(subject.metadata_question());
+        Assertions.assertFalse(subject.stored_question());
+
+//        it { expect(subject.info).to be_kind_of AppInfo::InfoPlist }
+//        it { expect(subject.mobileprovision).to be_kind_of AppInfo::MobileProvision }
+
+        Value hashSubscriptLambda = subject.getContext().eval("ruby", "-> recv, arg { recv[arg] }");
+        Value res = hashSubscriptLambda.execute(subject.info().getValue(), "CFBundleVersion");
+        Assertions.assertEquals(res.asString(), "1");
+
+        Assertions.assertEquals(1, subject.plugins().length);
+
+        Assertions.assertEquals("Notification", subject.plugins()[0].name());
+        Assertions.assertEquals(subject.plugins()[0].release_version(), "1.0");
+        Assertions.assertEquals(subject.plugins()[0].build_version(), "1");
+        //     it { expect(subject.plugins[0].info).to be_a AppInfo::InfoPlist }
+        Assertions.assertEquals(subject.plugins()[0].bundle_id(), "com.icyleaf.test.Demo.Notification");
+
+        Assertions.assertEquals(subject.frameworks().length, 1);
+        Assertions.assertFalse(subject.frameworks()[0].lib_question());
+        Assertions.assertEquals(subject.frameworks()[0].name(), "CarPlay.framework");
+        Assertions.assertNull(subject.frameworks()[0].release_version());
+        Assertions.assertNull(subject.frameworks()[0].build_version());
+        Assertions.assertNull(subject.frameworks()[0].bundle_id());
+
+        Assertions.assertNull(subject.frameworks()[0].macho());
+
+        subject.clear();
+        subject.getContext().close();
+    }
+
 }

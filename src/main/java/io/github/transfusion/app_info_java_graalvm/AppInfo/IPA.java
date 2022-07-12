@@ -3,6 +3,8 @@ package io.github.transfusion.app_info_java_graalvm.AppInfo;
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
 import io.github.transfusion.app_info_java_graalvm.AppInfo.ipa_related.Framework;
 import io.github.transfusion.app_info_java_graalvm.AppInfo.ipa_related.Plugin;
+import io.github.transfusion.app_info_java_graalvm.MachO.FatFile;
+import io.github.transfusion.app_info_java_graalvm.MachO.MachOFile;
 import io.github.transfusion.app_info_java_graalvm.Utilities;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
@@ -112,6 +114,11 @@ public abstract class IPA extends AbstractPolyglotAdapter {
 //    def_delegators :mobileprovision, :devices, :team_name, :team_identifier,
 //            :profile_name, :expired_date
 
+    /**
+     * May return null
+     *
+     * @return list of device UUIDs
+     */
     public abstract String[] devices();
 
     public abstract String team_name();
@@ -147,9 +154,9 @@ public abstract class IPA extends AbstractPolyglotAdapter {
         return res.asBoolean();
     }
 
-    public abstract List<Plugin> plugins();
+    public abstract Plugin[] plugins();
 
-    public abstract List<Framework> frameworks();
+    public abstract Framework[] frameworks();
 
 //    throws an exception as of Jul. 11 2022
 //    def hide_developer_certificates
@@ -167,6 +174,11 @@ public abstract class IPA extends AbstractPolyglotAdapter {
 
     public abstract String mobileprovision_path();
 
+    /**
+     * Test for nullness with .isNull()
+     *
+     * @return a hash
+     */
     public abstract Value metadata();
 
     public boolean metadata_question() {

@@ -29,10 +29,18 @@ public abstract class AbstractPolyglotAdapter {
      * Workaround instead of using getValue().getContext() since we can only close a context using the original object returned by the builder, and not
      * <a href="https://github.com/oracle/graal/blob/1ef351ef185d72310a5bc91c3ac466b3818fc25a/sdk/src/org.graalvm.polyglot/src/org/graalvm/polyglot/Context.java#L794">the one returned by Context.get()</a>
      *
-     * @return the original context that was used to instantiate this adapter
+     * @return the original context that was used to instantiate this adapter IF this object was instantiated by ourselves and not via any getter method
      */
     public Context getContext() {
+        if (this.ctx == null) return getValue().getContext();
         return this.ctx;
+    }
+
+    /**
+     * @return true if this object was automatically created
+     */
+    public boolean managed() {
+        return this.ctx == null;
     }
 
     /**
