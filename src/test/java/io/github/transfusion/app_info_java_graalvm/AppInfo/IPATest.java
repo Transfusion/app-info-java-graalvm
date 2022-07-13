@@ -53,7 +53,7 @@ public class IPATest {
         Assertions.assertArrayEquals(subject.archs(), new String[]{"armv7", "arm64"});
 
         // testing icons start
-        List<IconHash> icons = subject.icons_(true);
+        List<IPAIconHash> icons = subject.icons_(true);
         Assertions.assertTrue(icons.isEmpty());
 
         Assertions.assertEquals(subject.release_type(), "AdHoc");
@@ -109,7 +109,7 @@ public class IPATest {
         Assertions.assertArrayEquals(subject.archs(), new String[]{"armv7", "arm64"});
 
         // testing icons start
-        List<IconHash> icons = subject.icons_(true);
+        List<IPAIconHash> icons = subject.icons_(true);
         Assertions.assertFalse(icons.isEmpty());
 
         Assertions.assertEquals(subject.release_type(), "Enterprise");
