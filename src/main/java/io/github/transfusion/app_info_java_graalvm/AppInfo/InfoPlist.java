@@ -1,7 +1,6 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
-import io.github.transfusion.app_info_java_graalvm.Utilities;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
@@ -9,14 +8,7 @@ public abstract class InfoPlist extends AbstractPolyglotAdapter {
 
     public static InfoPlist from(Context polyglot, String path) {
         polyglot.eval("ruby", "require 'app-info'");
-        InfoPlist infoPlist = polyglot.eval("ruby", "AppInfo::InfoPlist.new('" + path + "')").as(InfoPlist.class);
-        infoPlist.setContext(polyglot);
-        return infoPlist;
-    }
-
-    public static InfoPlist from(String path) {
-        Context polyglot = Utilities.createContext();
-        return InfoPlist.from(polyglot, path);
+        return polyglot.eval("ruby", "AppInfo::InfoPlist.new('" + path + "')").as(InfoPlist.class);
     }
 
     public abstract String version();

@@ -1,21 +1,31 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
+import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
 
 public class IPATest {
+
+    private Context createContext() {
+        Context ctx = Context.newBuilder().
+                allowAllAccess(true).build();
+        ctx.eval("ruby", "Encoding.default_external = 'ISO-8859-1'");
+        ctx.eval("ruby", "require 'app-info'");
+        return ctx;
+    }
+
     @Test
     void iPhone() {
+        Context ctx = createContext();
         String resourceName = "apps/iphone.ipa";
         String absolutePath = getResourcesAbsolutePath(resourceName);
-        IPA subject = IPA.from(absolutePath);
+        IPA subject = IPA.from(ctx, absolutePath);
 
         Assertions.assertEquals(subject.os(), "iOS");
         Assertions.assertTrue(subject.iphone());
@@ -71,14 +81,15 @@ public class IPATest {
         Assertions.assertEquals(0, subject.frameworks().length);
 
         subject.clear();
-        subject.getContext().close();
+        ctx.close();
     }
 
     @Test
     void iPad() {
+        Context ctx = createContext();
         String resourceName = "apps/ipad.ipa";
         String absolutePath = getResourcesAbsolutePath(resourceName);
-        IPA subject = IPA.from(absolutePath);
+        IPA subject = IPA.from(ctx, absolutePath);
 
         Assertions.assertEquals(subject.os(), "iOS");
         Assertions.assertFalse(subject.iphone());
@@ -135,14 +146,15 @@ public class IPATest {
         Assertions.assertEquals(0, subject.frameworks().length);
 
         subject.clear();
-        subject.getContext().close();
+        ctx.close();
     }
 
     @Test
     void embedded() {
+        Context ctx = createContext();
         String resourceName = "apps/embedded.ipa";
         String absolutePath = getResourcesAbsolutePath(resourceName);
-        IPA subject = IPA.from(absolutePath);
+        IPA subject = IPA.from(ctx, absolutePath);
 
         Assertions.assertEquals(subject.os(), "iOS");
         Assertions.assertFalse(subject.iphone());
@@ -202,7 +214,7 @@ public class IPATest {
         Assertions.assertNull(subject.frameworks()[0].macho());
 
         subject.clear();
-        subject.getContext().close();
+        ctx.close();
     }
 
 }

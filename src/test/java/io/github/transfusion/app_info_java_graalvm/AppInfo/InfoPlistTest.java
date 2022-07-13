@@ -2,56 +2,29 @@ package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
-import static io.github.transfusion.app_info_java_graalvm.Utilities.createContext;
 
 public class InfoPlistTest {
-    private static Context ctx;
 
-    @BeforeAll
-    static void staticSetup() {
-        ctx = createContext();
-    }
-
-    @AfterAll
-    static void staticTeardown() {
-        ctx.close();
-        // sanity check to make sure that the context has indeed been properly closed
-        Assertions.assertThrows(IllegalStateException.class, () -> ctx.eval("ruby", "nil"));
-    }
-
-    private IPA ipadIPA;
-
-    private MacOS macOS;
-
-    @BeforeEach
-    void setup() {
-        String resourceName = "apps/ipad.ipa";
-        String absolutePath = getResourcesAbsolutePath(resourceName);
-        ipadIPA = IPA.from(InfoPlistTest.ctx, absolutePath);
-
-        resourceName = "apps/macos.zip";
-        absolutePath = getResourcesAbsolutePath(resourceName);
-        macOS = MacOS.from(InfoPlistTest.ctx, absolutePath);
-    }
-
-    @AfterEach
-    void teardown() {
-        ipadIPA.clear();
-        macOS.clear();
+    private Context createContext() {
+        Context ctx = Context.newBuilder().
+                allowAllAccess(true).build();
+        ctx.eval("ruby", "Encoding.default_external = 'ISO-8859-1'");
+        ctx.eval("ruby", "require 'app-info'");
+        return ctx;
     }
 
     @Test
     void iPadIPA() {
-        // test the "constructor"
-        InfoPlist infoPlist = InfoPlist.from(InfoPlistTest.ctx, ipadIPA.info_path());
+        Context ctx = createContext();
+        String resourceName = "apps/ipad.ipa";
+        String absolutePath = getResourcesAbsolutePath(resourceName);
+        IPA ipadIPA = IPA.from(ctx, absolutePath);
+
+        InfoPlist infoPlist = InfoPlist.from(ctx, ipadIPA.info_path());
 
         Assertions.assertEquals(infoPlist.build_version(), "1");
         Assertions.assertEquals(infoPlist.release_version(), "1.0");
@@ -72,11 +45,17 @@ public class InfoPlistTest {
         Assertions.assertEquals(res.asString(), "1.0");
 
         Assertions.assertArrayEquals(infoPlist.icons(), new String[]{"CFBundleIcons~ipad"});
+        ctx.close();
     }
 
     @Test
     void macOSApp() {
-        InfoPlist infoPlist = InfoPlist.from(InfoPlistTest.ctx, macOS.info_path());
+        Context ctx = createContext();
+        String resourceName = "apps/macos.zip";
+        String absolutePath = getResourcesAbsolutePath(resourceName);
+        MacOS macOS = MacOS.from(ctx, absolutePath);
+
+        InfoPlist infoPlist = InfoPlist.from(ctx, macOS.info_path());
 
         Assertions.assertEquals(infoPlist.build_version(), "1");
         Assertions.assertEquals(infoPlist.release_version(), "1.0");
@@ -97,5 +76,6 @@ public class InfoPlistTest {
         Assertions.assertEquals(res.asString(), "1.0");
 
         Assertions.assertArrayEquals(infoPlist.icons(), new String[]{"CFBundleIconFile", "CFBundleIconName"});
+        ctx.close();
     }
 }

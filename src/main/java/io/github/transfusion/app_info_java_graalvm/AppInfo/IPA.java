@@ -3,9 +3,6 @@ package io.github.transfusion.app_info_java_graalvm.AppInfo;
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
 import io.github.transfusion.app_info_java_graalvm.AppInfo.ipa_related.Framework;
 import io.github.transfusion.app_info_java_graalvm.AppInfo.ipa_related.Plugin;
-import io.github.transfusion.app_info_java_graalvm.MachO.FatFile;
-import io.github.transfusion.app_info_java_graalvm.MachO.MachOFile;
-import io.github.transfusion.app_info_java_graalvm.Utilities;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
@@ -17,14 +14,7 @@ public abstract class IPA extends AbstractPolyglotAdapter {
 
     public static IPA from(Context polyglot, String path) {
         polyglot.eval("ruby", "require 'app-info'");
-        IPA ipa = polyglot.eval("ruby", "AppInfo::IPA.new('" + path + "')").as(IPA.class);
-        ipa.setContext(polyglot);
-        return ipa;
-    }
-
-    public static IPA from(String path) {
-        Context polyglot = Utilities.createContext();
-        return IPA.from(polyglot, path);
+        return polyglot.eval("ruby", "AppInfo::IPA.new('" + path + "')").as(IPA.class);
     }
 
     public abstract String file();

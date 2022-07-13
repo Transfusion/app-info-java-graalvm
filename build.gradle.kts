@@ -19,6 +19,8 @@ dependencies {
 }
 
 tasks.getByName<Test>("test") {
+    minHeapSize = "128m"
+    maxHeapSize = "2048m"
     useJUnitPlatform()
     testLogging {
         events(PASSED, FAILED, STANDARD_ERROR, SKIPPED)

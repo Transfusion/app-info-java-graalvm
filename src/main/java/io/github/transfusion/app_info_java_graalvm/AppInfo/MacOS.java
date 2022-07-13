@@ -1,21 +1,13 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
-import io.github.transfusion.app_info_java_graalvm.Utilities;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
 public abstract class MacOS extends AbstractPolyglotAdapter {
     public static MacOS from(Context polyglot, String path) {
         polyglot.eval("ruby", "require 'app-info'");
-        MacOS macOS = polyglot.eval("ruby", "AppInfo::Macos.new('" + path + "')").as(MacOS.class);
-        macOS.setContext(polyglot);
-        return macOS;
-    }
-
-    public static MacOS from(String path) {
-        Context polyglot = Utilities.createContext();
-        return MacOS.from(polyglot, path);
+        return polyglot.eval("ruby", "AppInfo::Macos.new('" + path + "')").as(MacOS.class);
     }
 
     public abstract String info_path();
