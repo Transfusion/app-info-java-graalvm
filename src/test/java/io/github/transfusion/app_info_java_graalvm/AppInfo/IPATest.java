@@ -65,7 +65,7 @@ public class IPATest {
         Assertions.assertEquals(subject.distribution_name(), "iOS Team Provisioning Profile: * - QYER Inc");
 
         Assertions.assertTrue(subject.mobileprovision_question());
-        Assertions.assertEquals(13, subject.mobileprovision().developer_certs().size());
+        Assertions.assertEquals(13, subject.mobileprovision().developer_certs().length);
 
         Assertions.assertTrue(subject.metadata().isNull());
         Assertions.assertFalse(subject.metadata_question());
@@ -122,7 +122,7 @@ public class IPATest {
         Assertions.assertEquals(subject.distribution_name(), "XC: * - QYER Inc");
 
         Assertions.assertTrue(subject.mobileprovision_question());
-        Assertions.assertEquals(1, subject.mobileprovision().developer_certs().size());
+        Assertions.assertEquals(1, subject.mobileprovision().developer_certs().length);
 
         Assertions.assertTrue(subject.metadata().isNull());
         Assertions.assertFalse(subject.metadata_question());
@@ -183,7 +183,7 @@ public class IPATest {
         Assertions.assertNull(subject.devices());
 
         Assertions.assertTrue(subject.mobileprovision_question());
-        Assertions.assertEquals(2, subject.mobileprovision().developer_certs().size());
+        Assertions.assertEquals(2, subject.mobileprovision().developer_certs().length);
 
         Assertions.assertTrue(subject.metadata().isNull());
         Assertions.assertFalse(subject.metadata_question());

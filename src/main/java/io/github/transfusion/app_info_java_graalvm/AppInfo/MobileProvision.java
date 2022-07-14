@@ -36,13 +36,25 @@ public abstract class MobileProvision extends AbstractPolyglotAdapter {
 
     public abstract ZonedDateTime expired_date();
 
+    /**
+     * @return a Hash with arbitrary values
+     */
     public abstract Value entitlements();
 
     public static abstract class DeveloperCertificate extends AbstractPolyglotAdapter {
+        /**
+         * @return OpenSSL::X509::Certificate
+         */
+        public abstract Value raw();
 
+        public abstract String name();
+
+        public abstract ZonedDateTime created_date();
+
+        public abstract ZonedDateTime expired_date();
     }
 
-    public abstract List<DeveloperCertificate> developer_certs();
+    public abstract DeveloperCertificate[] developer_certs();
 
     public boolean development_question() {
         Context ctx = getContext();
@@ -72,5 +84,9 @@ public abstract class MobileProvision extends AbstractPolyglotAdapter {
         return res.asBoolean();
     }
 
-    public abstract String[] capabilities();
+    public boolean inhouse_question() {
+        return getValue().getMember("inhouse?").execute().asBoolean();
+    }
+
+    public abstract String[] enabled_capabilities();
 }
