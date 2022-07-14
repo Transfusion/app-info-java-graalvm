@@ -37,10 +37,15 @@ public abstract class Framework extends AbstractPolyglotAdapter {
     /**
      * @return either a {@link io.github.transfusion.app_info_java_graalvm.MachO.FatFile} or a {@link io.github.transfusion.app_info_java_graalvm.MachO.MachOFile} or null
      */
-    public AbstractPolyglotAdapter macho() {
+    public AbstractPolyglotAdapter macho_() {
+        Context ctx = getContext();
         Value v = getValue().getMember("macho").execute();
-        if (v.getMember("is_a?").execute("MachO::FatFile").asBoolean()) return v.as(FatFile.class);
-        if (v.getMember("is_a?").execute("MachO::MachOFile").asBoolean()) return v.as(MachOFile.class);
+        if (v.getMember("is_a?").execute(ctx.eval("ruby", "MachO::FatFile")).asBoolean()) {
+            return v.as(FatFile.class);
+        }
+        if (v.getMember("is_a?").execute(ctx.eval("ruby", "MachO::MachOFile")).asBoolean()) {
+            return v.as(MachOFile.class);
+        }
         return null;
     }
 

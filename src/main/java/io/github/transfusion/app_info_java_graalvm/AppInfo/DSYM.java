@@ -1,6 +1,8 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
+import io.github.transfusion.app_info_java_graalvm.MachO.FatFile;
+import io.github.transfusion.app_info_java_graalvm.MachO.MachOFile;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
@@ -16,9 +18,19 @@ public abstract class DSYM extends AbstractPolyglotAdapter {
     public abstract String object();
 
     /**
-     * @return MachO::MachOFile
+     * @return either a {@link io.github.transfusion.app_info_java_graalvm.MachO.FatFile} or a {@link io.github.transfusion.app_info_java_graalvm.MachO.MachOFile} or null
      */
-    public abstract Value macho_type();
+    public AbstractPolyglotAdapter macho_type_() {
+        Context ctx = getContext();
+        Value v = getValue().getMember("macho_type").execute();
+        if (v.getMember("is_a?").execute(ctx.eval("ruby", "MachO::FatFile")).asBoolean()) {
+            return v.as(FatFile.class);
+        }
+        if (v.getMember("is_a?").execute(ctx.eval("ruby", "MachO::MachOFile")).asBoolean()) {
+            return v.as(MachOFile.class);
+        }
+        return null;
+    }
 
     public abstract DSYM.MachO[] machos();
 

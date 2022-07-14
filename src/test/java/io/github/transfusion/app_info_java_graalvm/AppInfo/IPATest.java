@@ -211,7 +211,7 @@ public class IPATest {
         Assertions.assertNull(subject.frameworks()[0].build_version());
         Assertions.assertNull(subject.frameworks()[0].bundle_id());
 
-        Assertions.assertNull(subject.frameworks()[0].macho());
+        Assertions.assertNull(subject.frameworks()[0].macho_());
 
         subject.clear();
         ctx.close();

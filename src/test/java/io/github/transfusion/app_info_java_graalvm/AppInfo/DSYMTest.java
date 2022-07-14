@@ -1,5 +1,6 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
+import io.github.transfusion.app_info_java_graalvm.MachO.MachOFile;
 import org.graalvm.polyglot.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,8 +26,9 @@ public class DSYMTest {
         Assertions.assertEquals(subject.file_type(), "dSYM");
         Assertions.assertEquals(subject.object(), "iOS");
 
+        Assertions.assertFalse(subject.macho_type_().getValue().isNull());
 //        it { expect(subject.macho_type).to be_a ::MachO::MachOFile }
-        Assertions.assertFalse(subject.macho_type().isNull());
+        Assertions.assertTrue(subject.macho_type_() instanceof MachOFile);
         Assertions.assertEquals(subject.release_version(), "1.0");
         Assertions.assertEquals(subject.build_version(), "1");
 
@@ -46,5 +48,10 @@ public class DSYMTest {
         // no need to test this since we can get the raw value with getValue() anyways
         subject.clear();
         ctx.close();
+    }
+
+    @Test
+    void multiMachO() {
+
     }
 }
