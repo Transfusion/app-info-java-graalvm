@@ -60,4 +60,69 @@ public class MobileProvisionTest {
 
         ctx.close();
     }
+
+    @Test
+    void iOSAdhoc() {
+        Context ctx = createContext();
+        String resourceName = "mobileprovisions/ios_adhoc.mobileprovision";
+        String absolutePath = getResourcesAbsolutePath(resourceName);
+
+        MobileProvision subject = MobileProvision.from(ctx, absolutePath);
+
+        Assertions.assertEquals(subject.devices().length, 1);
+        Assertions.assertEquals(subject.platform(), "ios");
+        Assertions.assertArrayEquals(subject.platforms(), new String[]{"ios"});
+
+        Assertions.assertNotNull(subject.name());
+        Assertions.assertNotNull(subject.app_name());
+
+        Assertions.assertEquals(subject.type(), "adhoc");
+
+        Assertions.assertFalse(subject.development_question());
+        Assertions.assertTrue(subject.adhoc_question());
+        Assertions.assertFalse(subject.appstore_question());
+        Assertions.assertFalse(subject.inhouse_question());
+        Assertions.assertFalse(subject.enterprise_question());
+        Assertions.assertNotNull(subject.team_identifier());
+        Assertions.assertNotNull(subject.team_name());
+        Assertions.assertNotNull(subject.profile_name());
+        Assertions.assertTrue(subject.created_date().isEqual(ZonedDateTime.parse("2020-07-21T16:44:54+08:00")));
+        Assertions.assertTrue(subject.expired_date().isEqual(ZonedDateTime.parse("2020-10-24T16:40:28+08:00")));
+
+
+        Assertions.assertEquals(1, subject.developer_certs().length);
+
+        // additional testing for MobileProvision::DeveloperCertificate
+        Assertions.assertEquals(subject.developer_certs()[0].name(), "Apple Distribution: Niceliving (Beijing) Technology Co., Ltd. (WKR87TTKML)");
+        Assertions.assertTrue(subject.developer_certs()[0].created_date().isEqual(ZonedDateTime.parse("2020-10-24T08:40:28Z")));
+        Assertions.assertTrue(subject.developer_certs()[0].expired_date().isEqual(ZonedDateTime.parse("2019-10-25T08:40:28Z")));
+        Assertions.assertArrayEquals(subject.enabled_capabilities(), new String[]{"In-App Purchase",
+                "GameKit",
+                "Access WiFi Information",
+                "App Groups",
+                "Apple Pay",
+                "Associated Domains",
+                "AutoFill Credential Provider",
+                "ClassKit",
+                "Data Protection",
+                "HealthKit",
+                "HomeKit",
+                "Hotspot",
+                "iCloud",
+                "Inter-App Audio",
+                "Multipath",
+                "Network Extensions",
+                "NFC Tag Reading",
+                "Push Notifications",
+                "SiriKit",
+                "Personal VPN",
+                "Wireless Accessory Configuration",
+                "Wallet",
+                "Low Latency HLS",
+                "App Attest",
+                "Extended Virtual Address Space",
+                "Fonts",
+                "MDM Managed Associated Domains",
+                "Sign In with Apple"});
+    }
 }
