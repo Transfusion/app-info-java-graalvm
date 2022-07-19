@@ -129,12 +129,12 @@ public abstract class IPA extends AbstractPolyglotAdapter {
 
     public abstract String[] architectures();
 
-    public List<IPAIconHash> icons_(boolean uncrush) {
+    public IPAIconHash[] icons_(boolean uncrush) {
         Context ctx = getContext();
         Value lambda = ctx.eval("ruby", "-> recv, arg { recv.icons(uncrush: arg) }");
 
         Value res = lambda.execute(getValue(), uncrush);
-        return (List<IPAIconHash>) res.as(List.class);
+        return res.as(IPAIconHash[].class);
     }
 
     public boolean stored_question() {

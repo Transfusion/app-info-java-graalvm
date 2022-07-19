@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
@@ -53,8 +54,8 @@ public class IPATest {
         Assertions.assertArrayEquals(subject.archs(), new String[]{"armv7", "arm64"});
 
         // testing icons start
-        List<IPAIconHash> icons = subject.icons_(true);
-        Assertions.assertTrue(icons.isEmpty());
+        IPAIconHash[] icons = subject.icons_(true);
+        Assertions.assertEquals(0, icons.length);
 
         Assertions.assertEquals(subject.release_type(), "AdHoc");
         Assertions.assertEquals(subject.build_type(), "AdHoc");
@@ -109,8 +110,11 @@ public class IPATest {
         Assertions.assertArrayEquals(subject.archs(), new String[]{"armv7", "arm64"});
 
         // testing icons start
-        List<IPAIconHash> icons = subject.icons_(true);
-        Assertions.assertFalse(icons.isEmpty());
+        IPAIconHash[] icons = subject.icons_(true);
+        Assertions.assertEquals(7, icons.length);
+        IPAIconHash firstIcon = icons[0];
+        Assertions.assertArrayEquals(firstIcon.dimensions(), new Long[]{58L, 58L});
+        Assertions.assertEquals(firstIcon.name(), "AppIcon29x29@2x~ipad.png");
 
         Assertions.assertEquals(subject.release_type(), "Enterprise");
         Assertions.assertEquals(subject.build_type(), "Enterprise");
