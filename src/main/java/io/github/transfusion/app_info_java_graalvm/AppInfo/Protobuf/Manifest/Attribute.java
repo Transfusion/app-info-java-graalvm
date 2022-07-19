@@ -1,4 +1,4 @@
-package io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf;
+package io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Manifest;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
 import org.graalvm.polyglot.Value;

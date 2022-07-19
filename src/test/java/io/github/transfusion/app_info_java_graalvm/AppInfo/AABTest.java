@@ -1,7 +1,7 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
-import io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Attribute;
-import io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Node;
+import io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Manifest.Attribute;
+import io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Manifest.Node;
 import org.graalvm.polyglot.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,6 +37,19 @@ public class AABTest {
         Assertions.assertFalse(subject.wear());
         Assertions.assertFalse(subject.tv());
         Assertions.assertFalse(subject.automotive());
+        Assertions.assertEquals(subject.file(), absolutePath);
+        Assertions.assertEquals(subject.release_version(), "2.1.0");
+        Assertions.assertEquals(subject.build_version(), "10");
+        Assertions.assertEquals(subject.name(), "AppInfoDemo");
+        Assertions.assertEquals(subject.bundle_id(), "com.icyleaf.appinfodemo");
+        Assertions.assertEquals(subject.identifier(), "com.icyleaf.appinfodemo");
+        Assertions.assertNotNull(subject.icons());
+
+        // own assertions
+        AndroidIconHash firstIcon = subject.icons()[0];
+        Assertions.assertEquals(firstIcon.name(), "ic_launcher.webp");
+        Assertions.assertArrayEquals(firstIcon.dimensions(), new Long[]{48L, 48L});
+
 
         Assertions.assertEquals(subject.min_sdk_version(), 14);
         Assertions.assertEquals(subject.target_sdk_version(), 31);
@@ -46,12 +59,10 @@ public class AABTest {
 
         Assertions.assertEquals(subject.certificates()[0].path(), "META-INF/KEY0.RSA");
 
-        Assertions.assertTrue(subject.certificates()[0].certificate().getMember("is_a?").
-                execute(ctx.eval("ruby", "OpenSSL::X509::Certificate")).asBoolean());
+        Assertions.assertTrue(subject.certificates()[0].certificate().getMember("is_a?").execute(ctx.eval("ruby", "OpenSSL::X509::Certificate")).asBoolean());
 
         Assertions.assertEquals(subject.signs()[0].path(), "META-INF/KEY0.RSA");
-        Assertions.assertTrue(subject.signs()[0].sign().getMember("is_a?").
-                execute(ctx.eval("ruby", "OpenSSL::PKCS7")).asBoolean());
+        Assertions.assertTrue(subject.signs()[0].sign().getMember("is_a?").execute(ctx.eval("ruby", "OpenSSL::PKCS7")).asBoolean());
 
         Assertions.assertEquals(subject.activities().length, 2);
         Assertions.assertEquals(subject.services().length, 0);

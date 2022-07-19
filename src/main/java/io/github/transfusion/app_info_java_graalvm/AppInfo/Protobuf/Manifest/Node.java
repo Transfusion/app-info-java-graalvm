@@ -1,4 +1,4 @@
-package io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf;
+package io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Manifest;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
 import org.graalvm.polyglot.Value;
@@ -34,7 +34,7 @@ public abstract class Node extends AbstractPolyglotAdapter {
      * <a href="https://github.com/icyleaf/app_info/blob/39690b3feb2fafb32b26c0d25e55d56cef526e7f/lib/app_info/protobuf/manifest.rb#L83-L107">Children</a> is a hash of key to AppInfo::Protobuf::Node or an Array of AppInfo::Protobuf::Node
      * Note that in the ruby API, there are certain conditions under which a single node will be returned instead of an Array
      *
-     * @return list of {@link io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Node}, may have a single element
+     * @return list of {@link Node}, may have a single element
      */
     public Node[] getChild(String key) {
         Value v = getValue().getMember(key).execute();

@@ -1,10 +1,9 @@
 package io.github.transfusion.app_info_java_graalvm.AppInfo;
 
 import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
-import io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Node;
+import io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Manifest.Node;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
-import org.graalvm.polyglot.proxy.ProxyIterator;
 
 public abstract class AAB extends AbstractPolyglotAdapter {
 
@@ -12,6 +11,8 @@ public abstract class AAB extends AbstractPolyglotAdapter {
         polyglot.eval("ruby", "require 'app-info'");
         return polyglot.eval("ruby", "AppInfo::AAB.new('" + path + "')").as(AAB.class);
     }
+
+    public abstract String file();
 
     public abstract Long size();
 
@@ -23,6 +24,28 @@ public abstract class AAB extends AbstractPolyglotAdapter {
     }
 
     public abstract String os();
+
+    public abstract String file_type();
+
+    public abstract String version_name();
+
+    public abstract String[] deep_links();
+
+    public abstract String[] schemes();
+
+    public abstract String release_version();
+
+    public abstract String package_name();
+
+    public abstract String identifier();
+
+    public abstract String bundle_id();
+
+    public abstract String version_code();
+
+    public abstract String build_version();
+
+    public abstract String name();
 
     public abstract String device_type();
 
@@ -53,8 +76,9 @@ public abstract class AAB extends AbstractPolyglotAdapter {
 
     /**
      * def components
-     *      \@components ||= manifest.components.transform_values
+     * \@components ||= manifest.components.transform_values
      * end
+     *
      * @return an Enumerator
      */
     public abstract Value components();
@@ -65,14 +89,22 @@ public abstract class AAB extends AbstractPolyglotAdapter {
 
     public abstract APK.Certificate[] certificates();
 
+    public abstract Node manifest();
+
+    /**
+     * TODO:
+     * <p>
+     * def resource
+     * io = zip.read(zip.find_entry(BASE_RESOURCES))
+     * \@resource ||= Protobuf::Resources.parse(io)
+     * end
+     */
+
+    public abstract AndroidIconHash[] icons();
 
     public void clear() {
         Context ctx = getContext();
         Value v = ctx.eval("ruby", "-> recv { recv.clear! }");
         v.execute(getValue());
     }
-
-    public abstract String[] deep_links();
-
-    public abstract String[] schemes();
 }
