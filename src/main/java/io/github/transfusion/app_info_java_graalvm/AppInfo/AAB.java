@@ -63,6 +63,8 @@ public abstract class AAB extends AbstractPolyglotAdapter {
 
     public abstract Long min_sdk_version();
 
+    public abstract Long min_os_version();
+
     public abstract Long target_sdk_version();
 
 
