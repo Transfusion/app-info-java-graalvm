@@ -89,8 +89,7 @@ public class APKTest {
             Assertions.assertEquals(subject.apk().size(), 4000563);
             Assertions.assertEquals(subject.apk().digest_("sha1"), "7275559051dbaf93e1c605e66729b3068665e128");
 
-            System.out.println(subject.apk().time());
-            Assertions.assertTrue(subject.apk().time().isEqual(ZonedDateTime.parse("1981-01-01T01:01:02+07:30")));
+            Assertions.assertEquals(subject.apk().time().toLocalTime(), ZonedDateTime.parse("1981-01-01T01:01:02+07:30").toLocalTime());
 
             List<Pair<String, Long>> list = new ArrayList<>();
             subject.apk().each_file_((s1, s2) -> list.add(Pair.create(s1, s2.getMember("size").execute().asLong())));
