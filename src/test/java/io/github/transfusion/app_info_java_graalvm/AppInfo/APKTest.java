@@ -110,5 +110,20 @@ public class APKTest {
             subject.clear();
             ctx.close();
         }
+
+        @Test
+        @DisplayName("with Android min SDK 24+")
+        void minSDK24Plus() {
+            Context ctx = createContext();
+            String resourceName = "apps/android-24.apk";
+            String absolutePath = getResourcesAbsolutePath(resourceName);
+
+            APK subject = APK.from(ctx, absolutePath);
+
+            Assertions.assertEquals(subject.sign_version(), "unknown");
+
+            subject.clear();
+            ctx.close();
+        }
     }
 }
