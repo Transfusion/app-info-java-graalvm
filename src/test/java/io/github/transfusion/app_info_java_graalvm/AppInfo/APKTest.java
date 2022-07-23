@@ -14,6 +14,12 @@ import java.util.List;
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
 
 public class APKTest {
+    private Context createContext() {
+        Context ctx = Context.newBuilder().allowAllAccess(true).build();
+        ctx.eval("ruby", "Encoding.default_external = 'ISO-8859-1'");
+        ctx.eval("ruby", "require 'app-info'");
+        return ctx;
+    }
 
     @Nested
     class PhoneOrTablet {
@@ -125,5 +131,40 @@ public class APKTest {
             subject.clear();
             ctx.close();
         }
+    }
+
+    @Test
+    void Wear() {
+        Context ctx = createContext();
+        String resourceName = "apps/wear.apk";
+        String absolutePath = getResourcesAbsolutePath(resourceName);
+
+        APK subject = APK.from(ctx, absolutePath);
+
+        Assertions.assertEquals(subject.os(), "Android");
+        Assertions.assertTrue(subject.wear());
+        Assertions.assertFalse(subject.tv());
+        Assertions.assertFalse(subject.automotive());
+
+        // it { expect(subject.os).to eq AppInfo::Platform::ANDROID }
+
+        Assertions.assertEquals(subject.device_type(), "Watch");
+        Assertions.assertEquals(subject.file(), absolutePath);
+
+        // it { expect(subject.apk).to be_a Android::Apk }
+        Assertions.assertEquals(subject.release_version(), "1.0");
+        Assertions.assertEquals(subject.build_version(), "1");
+
+        Assertions.assertEquals(subject.name(), "AppInfoWearDemo");
+        Assertions.assertEquals(subject.bundle_id(), "com.icyleaf.appinfoweardemo");
+        Assertions.assertEquals(subject.identifier(), "com.icyleaf.appinfoweardemo");
+
+        Assertions.assertEquals(subject.icons().length, 4);
+        Assertions.assertEquals(subject.min_sdk_version(), 21);
+        Assertions.assertEquals(subject.target_sdk_version(), 23);
+
+
+        subject.clear();
+        ctx.close();
     }
 }
