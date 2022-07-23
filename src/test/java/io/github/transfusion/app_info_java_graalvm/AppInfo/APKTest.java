@@ -167,4 +167,37 @@ public class APKTest {
         subject.clear();
         ctx.close();
     }
+
+    @Test
+    void TV() {
+        Context ctx = createContext();
+        String resourceName = "apps/tv.apk";
+        String absolutePath = getResourcesAbsolutePath(resourceName);
+
+        APK subject = APK.from(ctx, absolutePath);
+
+        Assertions.assertEquals(subject.os(), "Android");
+        Assertions.assertFalse(subject.wear());
+        Assertions.assertTrue(subject.tv());
+        Assertions.assertFalse(subject.automotive());
+
+        // it { expect(subject.os).to eq AppInfo::Platform::ANDROID }
+        Assertions.assertEquals(subject.device_type(), "Television");
+        Assertions.assertEquals(subject.file(), absolutePath);
+
+        // it { expect(subject.apk).to be_a Android::Apk }
+        Assertions.assertEquals(subject.build_version(), "1");
+        Assertions.assertEquals(subject.release_version(), "1.0");
+        Assertions.assertEquals(subject.name(), "AppInfoTVDemo");
+        Assertions.assertEquals(subject.bundle_id(), "com.icyleaf.appinfotvdemo");
+
+        Assertions.assertEquals(subject.identifier(), "com.icyleaf.appinfotvdemo");
+
+        Assertions.assertEquals(subject.icons().length, 4);
+        Assertions.assertEquals(subject.min_sdk_version(), 23);
+        Assertions.assertEquals(subject.target_sdk_version(), 23);
+
+        subject.clear();
+        ctx.close();
+    }
 }
