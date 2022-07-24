@@ -13,16 +13,17 @@ public abstract class AppInfo extends AbstractPolyglotAdapter {
     }
 
     /**
-     * Convenience method; use {@link AppInfo#parse_(String)}  } instead
+     * Convenience method; use {@link AppInfo#parse_(String)} instead
      *
      * @param path path to file
+     * @return polyglot value returned from AppInfo::Parse
      */
     public abstract Value parse(String path);
 
     public abstract Value dump(String path);
 
     /**
-     * Use this method instead of {@link AppInfo#parse(String)}  }
+     * Use this method instead of {@link AppInfo#parse(String)}
      * <pre>
      *    def parse(file)
      *       raise NotFoundError, file unless File.exist?(file)

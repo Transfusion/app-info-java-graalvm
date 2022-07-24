@@ -2,12 +2,10 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.*
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 
 plugins {
-    id("java")
+    id("java-library")
     id("jacoco")
+    id("maven-publish")
 }
-
-group = "io.github.transfusion"
-version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -28,5 +26,26 @@ tasks.getByName<Test>("test") {
         showExceptions = true
         showCauses = true
         showStackTraces = true
+    }
+}
+
+
+publishing {
+    publications {
+        create<MavenPublication>("default") {
+            from(components["java"])
+            // Include any other artifacts here, like javadocs
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/transfusion/app-info-java-graalvm")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }

@@ -22,13 +22,13 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
 
 
         /**
-         * @return [Array<Manifest::IntentFilters < Manifest::IntentFilter>>]
+         * @return <pre>{@code [Array<Manifest::IntentFilters < Manifest::IntentFilter>>]}</pre>
          */
         public abstract IntentFilter[] intent_filters();
 
 
         /**
-         * @return [Array<Manifest::Meta>]
+         * @return <pre>{@code [Array<Manifest::Meta>]}</pre>
          */
         public abstract Meta[] metas();
 
@@ -170,7 +170,7 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
      * # used permission array
      * # @note return empty array when the manifest includes no use-parmission element
      *
-     * @return [Array<String>] permission names
+     * @return <pre>{@code [Array<String>] permission names}</pre>
      */
     public abstract String[] use_permissions();
 
@@ -178,21 +178,21 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
      * # used features array
      * # @note return empty array when the manifest includes no use-features element
      *
-     * @return [Array<String>] features names
+     * @return <pre>{@code [Array<String>] features names}</pre>
      */
     public abstract String[] use_features();
 
     /**
      * # Returns the manifest's application element or nil, if there isn't any.
      *
-     * @return [Android::Manifest::Application] the manifest's application element
+     * @return <pre>{@code [Android::Manifest::Application] the manifest's application element}</pre>
      */
     public abstract Application application();
 
     /**
      * # @note return empty array when the manifest include no components
      *
-     * @return [Array<Android::Manifest::Component>] all components in apk
+     * @return <pre>{@code [Array<Android::Manifest::Component>] all components in apk}</pre>
      */
     public abstract Component[] components();
 
@@ -210,14 +210,14 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
     /**
      * # @note return empty array when the manifest include no services
      *
-     * @return [Array<Android::Manifest::Component>] all services in the apk
+     * @return <pre>{@code [Array<Android::Manifest::Component>] all services in the apk}</pre>
      */
     public abstract Component[] services();
 
     /**
      * # @note return empty array when the manifest not include http or https scheme(s) of data
      *
-     * @return [Array<String>] all schemes in intent filters
+     * @return <pre>{@code [Array<String>] all schemes in intent filters}</pre>
      */
     public abstract String[] schemes();
 
@@ -226,7 +226,7 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
     /**
      * # @note return empty array when the manifest include no activities
      *
-     * @return [Array<Android::Manifest::Activity & ActivityAlias>] all activities that are launchers in the apk
+     * @return <pre>{@code [Array<Android::Manifest::Activity & ActivityAlias>] all activities that are launchers in the apk}</pre>
      */
     public List<Activity> launcherActivities_() {
         Value activityAliasClass = getContext().eval("ruby", "Android::Manifest::ActivityAlias");
@@ -253,7 +253,7 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
 
     /**
      * @param lang language code like 'ja', 'cn', ...
-     * @return @return [String]
+     * @return [String]
      */
     public abstract String version_name(String lang);
 

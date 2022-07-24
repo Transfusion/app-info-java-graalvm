@@ -73,6 +73,8 @@ public abstract class APK extends AbstractPolyglotAdapter {
 
     /**
      * <a href="https://github.com/oracle/truffleruby/blob/master/doc/user/jruby-migration.md#passing-blocks">How to pass blocks</a>
+     *
+     * @param consumer an implementation of {@link EachFileConsumer} which gets called with each file
      * # @yield [name, data]
      * # @yieldparam [String] name file name in apk
      * # @yieldparam [String] data file data in apk
@@ -119,13 +121,13 @@ public abstract class APK extends AbstractPolyglotAdapter {
     /**
      * # extract application icon data from AndroidManifest and resource.
      *
-     * @return [Hash{ String => String }] hash key is icon filename. value is image data
+     * @return <pre>{@code [Hash{ String => String }] hash key is icon filename. value is image data}</pre>
      */
     public abstract Value icon();
 
     /**
      * @param icon_id [String] icon_id to be searched in the resource.
-     * @return [Hash{ String => String }] hash key is icon filename. value is image data
+     * @return <pre>{@code [Hash{ String => String }] hash key is icon filename. value is image data }</pre>
      */
     public Value icon_by_id_(String icon_id) {
         return getValue().getMember("icon_by_id").execute(icon_id);
@@ -145,21 +147,21 @@ public abstract class APK extends AbstractPolyglotAdapter {
     /**
      * get screen layout xml datas
      *
-     * @return [Hash{ String => Android::Layout }] key: laytout file path, value: layout object
+     * @return <pre>{@code [Hash{ String => Android::Layout }] key: laytout file path, value: layout object }</pre>
      */
     public abstract Value layouts();
 
     /**
      * apk's signature information
      *
-     * @return [Hash{ String => OpenSSL::PKCS7 } ] key: sign file path, value: signature
+     * @return <pre>{@code [Hash{ String => OpenSSL::PKCS7 } ] key: sign file path, value: signature}</pre>
      */
     public abstract Value signs();
 
     /**
      * certificate info which is used for signing
      *
-     * @return [Hash{String => OpenSSL::X509::Certificate }] key: sign file path, value: first certficate in the sign file
+     * @return <pre>{@code [Hash{String => OpenSSL::X509::Certificate }] key: sign file path, value: first certficate in the sign file }</pre>
      */
     public abstract Value certificates();
 }

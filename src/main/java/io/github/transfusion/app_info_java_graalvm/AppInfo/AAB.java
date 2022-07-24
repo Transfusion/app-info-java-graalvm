@@ -93,7 +93,7 @@ public abstract class AAB extends AbstractPolyglotAdapter {
 
     public abstract Node manifest();
 
-    /**
+    /*
      * TODO:
      * <p>
      * def resource
