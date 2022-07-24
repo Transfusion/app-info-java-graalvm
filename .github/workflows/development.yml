@@ -2,9 +2,11 @@ name: Development
 
 on:
   push:
-    branches: [dev, main]
+    branches: [ dev, main ]
+    tags:        
+      - '*'
   pull_request:
-    branches: [dev, main]
+    branches: [ dev, main ]
 
 jobs:
   test:
@@ -54,3 +56,33 @@ jobs:
         with:
           name: html-results
           path: build/reports/**/*
+
+  publish:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'dev'
+          java-version: '11'
+          components: 'ruby'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print environment info
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          gu --version
+          java --version
+          ruby --version
+
+      - name: Publish to GH packages
+        # based off of https://github.com/smyrick/kotlin-extensions/blob/master/.github/workflows/publish-release.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
+          echo "New version: ${NEW_VERSION}"
+          echo "Github username: ${GITHUB_ACTOR}"
+          ./gradlew -Pversion=${NEW_VERSION} publish
