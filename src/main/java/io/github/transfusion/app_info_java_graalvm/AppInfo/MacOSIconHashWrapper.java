@@ -4,6 +4,8 @@ import io.github.transfusion.app_info_java_graalvm.AbstractPolyglotAdapter;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
+import java.util.List;
+
 public abstract class MacOSIconHashWrapper extends AbstractPolyglotAdapter {
     public static abstract class IconSet extends AbstractPolyglotAdapter {
         public String name() {
@@ -45,11 +47,11 @@ public abstract class MacOSIconHashWrapper extends AbstractPolyglotAdapter {
     /**
      * @return null if icons(convert: false)
      */
-    public IconSet[] sets() {
+    public List<IconSet> sets() {
         Context ctx = getContext();
         boolean hasSets = ctx.eval("ruby", "-> recv { recv.key?(:sets) }").execute(getValue()).asBoolean();
         if (!hasSets) return null;
-        return ctx.eval("ruby", "-> recv { recv[:sets] }").execute(getValue()).as(IconSet[].class);
+        return iterableToList(ctx.eval("ruby", "-> recv { recv[:sets] }").execute(getValue()), IconSet.class);
     }
 
 

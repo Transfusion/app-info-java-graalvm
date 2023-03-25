@@ -13,9 +13,10 @@ TBD
 
 ## Version Support
 
-| `app-info-java-graalvm` ver.  |  `app_info` gem ver. | GraalVM CE ver. |  Target Java ver. |
-| ------------- | ------------- | --------------- | --------------- |
-| 0.1.0-SNAPSHOT  | 2.8.3 | 22.3.0-dev | 11
+| `app-info-java-graalvm` ver. |  `app_info` gem ver. | GraalVM CE ver. |  Target Java ver. |
+|------------------------------| ------------- |-----------------| --------------- |
+| 0.2.0-SNAPSHOT               | 2.8.3 | 23.0.0-dev      | 17
+| 0.1.0-SNAPSHOT               | 2.8.3 | 22.3.0-dev      | 11
 
 ## License
 

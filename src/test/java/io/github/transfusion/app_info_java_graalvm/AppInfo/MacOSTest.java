@@ -62,7 +62,7 @@ public class MacOSTest {
 
         Assertions.assertNotNull(subject.icons_(true));
         Assertions.assertNotNull(subject.icons_(true).sets());
-        Assertions.assertEquals(subject.icons_(true).sets().length, 3);
+        Assertions.assertEquals(subject.icons_(true).sets().size(), 3);
 
         subject.clear();
         ctx.close();

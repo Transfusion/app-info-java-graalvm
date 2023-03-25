@@ -129,12 +129,12 @@ public abstract class IPA extends AbstractPolyglotAdapter {
 
     public abstract String[] architectures();
 
-    public IPAIconHash[] icons_(boolean uncrush) {
+    public List<IPAIconHash> icons_(boolean uncrush) {
         Context ctx = getContext();
         Value lambda = ctx.eval("ruby", "-> recv, arg { recv.icons(uncrush: arg) }");
 
         Value res = lambda.execute(getValue(), uncrush);
-        return res.as(IPAIconHash[].class);
+        return iterableToList(res, IPAIconHash.class);
     }
 
     public boolean stored_question() {
@@ -144,9 +144,18 @@ public abstract class IPA extends AbstractPolyglotAdapter {
         return res.asBoolean();
     }
 
-    public abstract Plugin[] plugins();
+    public abstract Value plugins();
 
-    public abstract Framework[] frameworks();
+    public List<Plugin> plugins_() {
+        return iterableToList(plugins(), Plugin.class);
+    }
+
+    public abstract Value frameworks();
+
+    public List<Framework> frameworks_() {
+        return iterableToList(frameworks(), Framework.class);
+    }
+
 
 //    throws an exception as of Jul. 11 2022
 //    def hide_developer_certificates

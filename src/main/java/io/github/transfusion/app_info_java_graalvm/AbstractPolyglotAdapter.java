@@ -4,6 +4,8 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract class to be extended by other abstract classes which are actually instances of org.graalvm.polyglot.Value.
@@ -29,5 +31,14 @@ public abstract class AbstractPolyglotAdapter {
      */
     public Context getContext() {
         return getValue().getContext();
+    }
+
+    public static <T> List<T> iterableToList(Value iterable, Class<T> clazz) {
+        List<T> res = new ArrayList<>();
+        for (Value it = iterable.getIterator(); it.hasIteratorNextElement(); ) {
+            Value v = it.getIteratorNextElement();
+            res.add(v.as(clazz));
+        }
+        return res;
     }
 }

@@ -49,12 +49,12 @@ public class MobileProvisionTest {
         Value res = hashSubscriptLambda.execute(subject.entitlements(), "com.apple.developer.siri");
         Assertions.assertTrue(res.asBoolean());
 
-        Assertions.assertEquals(1, subject.developer_certs().length);
+        Assertions.assertEquals(1, subject.developer_certs_().size());
 
         // additional testing for MobileProvision::DeveloperCertificate
-        Assertions.assertEquals(subject.developer_certs()[0].name(), "Apple Development: Shen Wang (A3Z3NZQ8V3)");
-        Assertions.assertTrue(subject.developer_certs()[0].created_date().isEqual(ZonedDateTime.parse("2021-05-28T13:33:21Z")));
-        Assertions.assertTrue(subject.developer_certs()[0].expired_date().isEqual(ZonedDateTime.parse("2020-05-28T13:33:21Z")));
+        Assertions.assertEquals(subject.developer_certs_().get(0).name(), "Apple Development: Shen Wang (A3Z3NZQ8V3)");
+        Assertions.assertTrue(subject.developer_certs_().get(0).created_date().isEqual(ZonedDateTime.parse("2021-05-28T13:33:21Z")));
+        Assertions.assertTrue(subject.developer_certs_().get(0).expired_date().isEqual(ZonedDateTime.parse("2020-05-28T13:33:21Z")));
 
         Assertions.assertArrayEquals(subject.enabled_capabilities(), new String[]{"Access WiFi Information", "App Groups", "Apple Pay", "Associated Domains", "AutoFill Credential Provider", "ClassKit", "Data Protection", "HealthKit", "HomeKit", "Hotspot", "iCloud", "Inter-App Audio", "Multipath", "Network Extensions", "NFC Tag Reading", "Push Notifications", "SiriKit", "Personal VPN", "Wireless Accessory Configuration", "Wallet", "Low Latency HLS", "App Attest", "Extended Virtual Address Space", "Fonts", "MDM Managed Associated Domains", "Sign In with Apple"});
 
@@ -90,12 +90,12 @@ public class MobileProvisionTest {
         Assertions.assertTrue(subject.expired_date().isEqual(ZonedDateTime.parse("2020-10-24T16:40:28+08:00")));
 
 
-        Assertions.assertEquals(1, subject.developer_certs().length);
+        Assertions.assertEquals(1, subject.developer_certs_().size());
 
         // additional testing for MobileProvision::DeveloperCertificate
-        Assertions.assertEquals(subject.developer_certs()[0].name(), "Apple Distribution: Niceliving (Beijing) Technology Co., Ltd. (WKR87TTKML)");
-        Assertions.assertTrue(subject.developer_certs()[0].created_date().isEqual(ZonedDateTime.parse("2020-10-24T08:40:28Z")));
-        Assertions.assertTrue(subject.developer_certs()[0].expired_date().isEqual(ZonedDateTime.parse("2019-10-25T08:40:28Z")));
+        Assertions.assertEquals(subject.developer_certs_().get(0).name(), "Apple Distribution: Niceliving (Beijing) Technology Co., Ltd. (WKR87TTKML)");
+        Assertions.assertTrue(subject.developer_certs_().get(0).created_date().isEqual(ZonedDateTime.parse("2020-10-24T08:40:28Z")));
+        Assertions.assertTrue(subject.developer_certs_().get(0).expired_date().isEqual(ZonedDateTime.parse("2019-10-25T08:40:28Z")));
         Assertions.assertArrayEquals(subject.enabled_capabilities(), new String[]{"In-App Purchase", "GameKit", "Access WiFi Information", "App Groups", "Apple Pay", "Associated Domains", "AutoFill Credential Provider", "ClassKit", "Data Protection", "HealthKit", "HomeKit", "Hotspot", "iCloud", "Inter-App Audio", "Multipath", "Network Extensions", "NFC Tag Reading", "Push Notifications", "SiriKit", "Personal VPN", "Wireless Accessory Configuration", "Wallet", "Low Latency HLS", "App Attest", "Extended Virtual Address Space", "Fonts", "MDM Managed Associated Domains", "Sign In with Apple"});
     }
 
@@ -128,13 +128,13 @@ public class MobileProvisionTest {
         Assertions.assertTrue(subject.expired_date().isEqual(ZonedDateTime.parse("2020-10-24T16:40:28+08:00")));
 
 
-        Assertions.assertEquals(1, subject.developer_certs().length);
+        Assertions.assertEquals(1, subject.developer_certs_().size());
 
         // additional testing for MobileProvision::DeveloperCertificate
-        Assertions.assertEquals(subject.developer_certs()[0].name(), "Apple Distribution: Niceliving (Beijing) Technology Co., Ltd. (WKR87TTKML)");
+        Assertions.assertEquals(subject.developer_certs_().get(0).name(), "Apple Distribution: Niceliving (Beijing) Technology Co., Ltd. (WKR87TTKML)");
 
-        Assertions.assertTrue(subject.developer_certs()[0].created_date().isEqual(ZonedDateTime.parse("2020-10-24T08:40:28Z")));
-        Assertions.assertTrue(subject.developer_certs()[0].expired_date().isEqual(ZonedDateTime.parse("2019-10-25T08:40:28Z")));
+        Assertions.assertTrue(subject.developer_certs_().get(0).created_date().isEqual(ZonedDateTime.parse("2020-10-24T08:40:28Z")));
+        Assertions.assertTrue(subject.developer_certs_().get(0).expired_date().isEqual(ZonedDateTime.parse("2019-10-25T08:40:28Z")));
         Assertions.assertArrayEquals(subject.enabled_capabilities(), new String[]{"In-App Purchase", "GameKit", "Access WiFi Information", "App Groups", "Apple Pay", "Associated Domains", "AutoFill Credential Provider", "ClassKit", "Data Protection", "HealthKit", "HomeKit", "Hotspot", "iCloud", "Inter-App Audio", "Multipath", "Network Extensions", "NFC Tag Reading", "Push Notifications", "SiriKit", "Personal VPN", "Wireless Accessory Configuration", "Wallet", "Low Latency HLS", "App Attest", "Extended Virtual Address Space", "Fonts", "MDM Managed Associated Domains", "Sign In with Apple"});
     }
 
@@ -171,12 +171,12 @@ public class MobileProvisionTest {
         Value res = hashSubscriptLambda.execute(subject.entitlements(), "com.apple.developer.maps");
         Assertions.assertTrue(res.asBoolean());
 
-        Assertions.assertEquals(1, subject.developer_certs().length);
+        Assertions.assertEquals(1, subject.developer_certs_().size());
 
         // additional testing for MobileProvision::DeveloperCertificate
-        Assertions.assertEquals(subject.developer_certs()[0].name(), "Apple Development: Shen Wang (A3Z3NZQ8V3)");
-        Assertions.assertTrue(subject.developer_certs()[0].created_date().isEqual(ZonedDateTime.parse("2021-05-28T13:33:21Z")));
-        Assertions.assertTrue(subject.developer_certs()[0].expired_date().isEqual(ZonedDateTime.parse("2020-05-28T13:33:21Z")));
+        Assertions.assertEquals(subject.developer_certs_().get(0).name(), "Apple Development: Shen Wang (A3Z3NZQ8V3)");
+        Assertions.assertTrue(subject.developer_certs_().get(0).created_date().isEqual(ZonedDateTime.parse("2021-05-28T13:33:21Z")));
+        Assertions.assertTrue(subject.developer_certs_().get(0).expired_date().isEqual(ZonedDateTime.parse("2020-05-28T13:33:21Z")));
 
         Assertions.assertArrayEquals(subject.enabled_capabilities(), new String[]{"System Extension", "Maps", "Network Extensions", "Apple Pay", "Associated Domains", "Personal VPN", "AutoFill Credential Provider", "ClassKit", "Low Latency HLS", "iCloud", "MDM Managed Associated Domains", "Sign In with Apple", "Custom Network Protocol"});
 
@@ -215,13 +215,13 @@ public class MobileProvisionTest {
         Value res = hashSubscriptLambda.execute(subject.entitlements(), "com.apple.developer.maps");
         Assertions.assertTrue(res.asBoolean());
 
-        Assertions.assertEquals(1, subject.developer_certs().length);
+        Assertions.assertEquals(1, subject.developer_certs_().size());
 
         // additional testing for MobileProvision::DeveloperCertificate
-        Assertions.assertEquals(subject.developer_certs()[0].name(), "Apple Distribution: Niceliving (Beijing) Technology Co., Ltd. (WKR87TTKML)");
+        Assertions.assertEquals(subject.developer_certs_().get(0).name(), "Apple Distribution: Niceliving (Beijing) Technology Co., Ltd. (WKR87TTKML)");
 
-        Assertions.assertTrue(subject.developer_certs()[0].created_date().isEqual(ZonedDateTime.parse("2020-10-24T08:40:28Z")));
-        Assertions.assertTrue(subject.developer_certs()[0].expired_date().isEqual(ZonedDateTime.parse("2019-10-25T08:40:28Z")));
+        Assertions.assertTrue(subject.developer_certs_().get(0).created_date().isEqual(ZonedDateTime.parse("2020-10-24T08:40:28Z")));
+        Assertions.assertTrue(subject.developer_certs_().get(0).expired_date().isEqual(ZonedDateTime.parse("2019-10-25T08:40:28Z")));
 
         Assertions.assertArrayEquals(subject.enabled_capabilities(), new String[]{"In-App Purchase", "GameKit", "System Extension", "Maps", "Network Extensions", "Apple Pay", "Associated Domains", "Personal VPN", "AutoFill Credential Provider", "ClassKit", "Low Latency HLS", "iCloud", "MDM Managed Associated Domains", "Sign In with Apple", "Custom Network Protocol"});
 

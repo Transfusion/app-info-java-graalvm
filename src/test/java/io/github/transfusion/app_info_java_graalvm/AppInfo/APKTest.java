@@ -52,19 +52,19 @@ public class APKTest {
             Assertions.assertEquals(subject.bundle_id(), "com.icyleaf.appinfodemo");
             Assertions.assertEquals(subject.identifier(), "com.icyleaf.appinfodemo");
 
-            Assertions.assertEquals(subject.icons().length, 6);
+            Assertions.assertEquals(subject.icons_().size(), 6);
             // own assertions
-            Assertions.assertEquals(subject.icons()[0].name(), "YB.webp");
-            Assertions.assertArrayEquals(subject.icons()[0].dimensions(), new Long[]{48L, 48L});
+            Assertions.assertEquals(subject.icons_().get(0).name(), "YB.webp");
+            Assertions.assertArrayEquals(subject.icons_().get(0).dimensions(), new Long[]{48L, 48L});
             // own assertions end
 
             Assertions.assertEquals(subject.min_sdk_version(), 14L);
             Assertions.assertEquals(subject.target_sdk_version(), 31L);
             Assertions.assertEquals(subject.sign_version(), "v1");
 
-            Assertions.assertEquals(subject.activities().length, 2);
-            Assertions.assertEquals(subject.services().length, 0);
-            Assertions.assertEquals(subject.components().length, 2);
+            Assertions.assertEquals(subject.activities_().size(), 2);
+            Assertions.assertEquals(subject.services_().size(), 0);
+            Assertions.assertEquals(subject.components_().size(), 2);
 
             Assertions.assertEquals(subject.use_permissions()[0], "android.permission.ACCESS_NETWORK_STATE");
             Assertions.assertEquals(subject.use_features()[0], "android.hardware.bluetooth");
@@ -75,12 +75,12 @@ public class APKTest {
 
             Assertions.assertArrayEquals(subject.deep_links(), new String[]{"icyleaf.com"});
             Assertions.assertArrayEquals(subject.schemes(), new String[]{"appinfo"});
-            Assertions.assertEquals(subject.certificates()[0].path(), "META-INF/CERT.RSA");
+            Assertions.assertEquals(subject.certificates_().get(0).path(), "META-INF/CERT.RSA");
 
             // it { expect(subject.certificates.first.certificate).to be_kind_of(OpenSSL::X509::Certificate) }
             //       it { expect(subject.signs.first).to be_kind_of(AppInfo::APK::Sign) }
 
-            Assertions.assertEquals(subject.signs()[0].path(), "META-INF/CERT.RSA");
+            Assertions.assertEquals(subject.signs_().get(0).path(), "META-INF/CERT.RSA");
 
             // it { expect(subject.signs.first.sign).to be_kind_of(OpenSSL::PKCS7) }
 
@@ -159,7 +159,7 @@ public class APKTest {
         Assertions.assertEquals(subject.bundle_id(), "com.icyleaf.appinfoweardemo");
         Assertions.assertEquals(subject.identifier(), "com.icyleaf.appinfoweardemo");
 
-        Assertions.assertEquals(subject.icons().length, 4);
+        Assertions.assertEquals(subject.icons_().size(), 4);
         Assertions.assertEquals(subject.min_sdk_version(), 21);
         Assertions.assertEquals(subject.target_sdk_version(), 23);
 
@@ -193,7 +193,7 @@ public class APKTest {
 
         Assertions.assertEquals(subject.identifier(), "com.icyleaf.appinfotvdemo");
 
-        Assertions.assertEquals(subject.icons().length, 4);
+        Assertions.assertEquals(subject.icons_().size(), 4);
         Assertions.assertEquals(subject.min_sdk_version(), 23);
         Assertions.assertEquals(subject.target_sdk_version(), 23);
 
@@ -226,7 +226,7 @@ public class APKTest {
 
         Assertions.assertEquals(subject.identifier(), "com.icyleaf.appinfo.automotive");
 
-        Assertions.assertEquals(subject.icons().length, 6);
+        Assertions.assertEquals(subject.icons_().size(), 6);
         Assertions.assertEquals(subject.min_sdk_version(), 29);
         Assertions.assertEquals(subject.target_sdk_version(), 31);
 

@@ -24,13 +24,21 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
         /**
          * @return <pre>{@code [Array<Manifest::IntentFilters < Manifest::IntentFilter>>]}</pre>
          */
-        public abstract IntentFilter[] intent_filters();
+        public abstract Value intent_filters();
+
+        public List<IntentFilter> intent_filters_() {
+            return iterableToList(intent_filters(), IntentFilter.class);
+        }
 
 
         /**
          * @return <pre>{@code [Array<Manifest::Meta>]}</pre>
          */
-        public abstract Meta[] metas();
+        public abstract Value metas();
+
+        public List<Meta> metas_() {
+            return iterableToList(metas(), Meta.class);
+        }
 
 
         /**
@@ -83,17 +91,29 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
         /**
          * @return [IntentFilter::Action] intent-filter actions
          */
-        public abstract Action[] actions();
+        public abstract Value actions();
+
+        public List<Action> actions_() {
+            return iterableToList(actions(), Action.class);
+        }
 
         /**
          * @return [IntentFilter::Category] intent-filter categories
          */
-        public abstract Category[] categories();
+        public abstract Value categories();
+
+        public List<Category> categories_() {
+            return iterableToList(categories(), Category.class);
+        }
 
         /**
          * @return [IntentFilter::Data] intent-filter data
          */
-        public abstract Data[] data();
+        public abstract Value data();
+
+        public List<Data> data_() {
+            return iterableToList(data(), Data.class);
+        }
 
 
         public Boolean empty() {
@@ -194,16 +214,24 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
      *
      * @return <pre>{@code [Array<Android::Manifest::Component>] all components in apk}</pre>
      */
-    public abstract Component[] components();
+    public abstract Value components();
 
-    public abstract Activity[] activities();
+    public List<Component> components_() {
+        return iterableToList(components(), Component.class);
+    }
+
+    public abstract Value activities();
+
+    private List<Activity> activities__() {
+        return iterableToList(activities(), Activity.class);
+    }
 
     public List<Activity> activities_() {
         Value activityAliasClass = getContext().eval("ruby", "Android::Manifest::ActivityAlias");
 //        Value activityClass = getContext().eval("ruby", "Android::Manifest::Activity");
 
-        Activity[] activities = activities();
-        return Arrays.stream(activities).map(activity -> activity.getValue().getMember("is_a?").execute(activityAliasClass).asBoolean() ?
+        List<Activity> activities = activities__();
+        return activities.stream().map(activity -> activity.getValue().getMember("is_a?").execute(activityAliasClass).asBoolean() ?
                 activity.getValue().as(ActivityAlias.class) : activity.getValue().as(Activity.class)).collect(Collectors.toList());
     }
 
@@ -212,7 +240,11 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
      *
      * @return <pre>{@code [Array<Android::Manifest::Component>] all services in the apk}</pre>
      */
-    public abstract Component[] services();
+    public abstract Value services();
+
+    public List<Component> services_() {
+        return iterableToList(services(), Component.class);
+    }
 
     /**
      * # @note return empty array when the manifest not include http or https scheme(s) of data
@@ -221,7 +253,11 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
      */
     public abstract String[] schemes();
 
-    public abstract Activity[] launcherActivities();
+    public abstract Value launcherActivities();
+
+    private List<Activity> launcherActivities__() {
+        return iterableToList(launcherActivities(), Activity.class);
+    }
 
     /**
      * # @note return empty array when the manifest include no activities
@@ -232,8 +268,7 @@ public abstract class Manifest extends AbstractPolyglotAdapter {
         Value activityAliasClass = getContext().eval("ruby", "Android::Manifest::ActivityAlias");
 //        Value activityClass = getContext().eval("ruby", "Android::Manifest::Activity");
 
-        Activity[] activities = launcherActivities();
-        return Arrays.stream(activities).map(activity -> activity.getValue().getMember("is_a?").execute(activityAliasClass).asBoolean() ?
+        return launcherActivities__().stream().map(activity -> activity.getValue().getMember("is_a?").execute(activityAliasClass).asBoolean() ?
                 activity.getValue().as(ActivityAlias.class) : activity.getValue().as(Activity.class)).collect(Collectors.toList());
     }
 

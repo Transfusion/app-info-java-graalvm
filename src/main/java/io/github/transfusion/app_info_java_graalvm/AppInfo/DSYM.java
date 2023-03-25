@@ -6,6 +6,8 @@ import io.github.transfusion.app_info_java_graalvm.MachO.MachOFile;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
+import java.util.List;
+
 public abstract class DSYM extends AbstractPolyglotAdapter {
 
     public static DSYM from(Context polyglot, String path) {
@@ -32,7 +34,11 @@ public abstract class DSYM extends AbstractPolyglotAdapter {
         return null;
     }
 
-    public abstract DSYM.MachO[] machos();
+    public abstract Value machos();
+
+    public List<MachO> machos_() {
+        return iterableToList(machos(), MachO.class);
+    }
 
     public abstract String release_version();
 

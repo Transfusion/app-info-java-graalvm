@@ -5,6 +5,8 @@ import io.github.transfusion.app_info_java_graalvm.AppInfo.Protobuf.Manifest.Nod
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
+import java.util.List;
+
 public abstract class AAB extends AbstractPolyglotAdapter {
 
     public static AAB from(Context polyglot, String path) {
@@ -72,9 +74,17 @@ public abstract class AAB extends AbstractPolyglotAdapter {
 
     public abstract String[] use_permissions();
 
-    public abstract Node[] activities();
+    public abstract Value activities();
 
-    public abstract Node[] services();
+    public List<Node> activities_() {
+        return iterableToList(activities(), Node.class);
+    }
+
+    public abstract Value services();
+
+    public List<Node> services_() {
+        return iterableToList(services(), Node.class);
+    }
 
     /**
      * def components
@@ -87,9 +97,19 @@ public abstract class AAB extends AbstractPolyglotAdapter {
 
     public abstract String sign_version();
 
-    public abstract APK.Sign[] signs();
+    public abstract Value signs();
 
-    public abstract APK.Certificate[] certificates();
+    public List<APK.Sign> signs_() {
+        return iterableToList(signs(), APK.Sign.class);
+    }
+
+
+    public abstract Value certificates();
+
+    public List<APK.Certificate> certificates_() {
+        return iterableToList(certificates(), APK.Certificate.class);
+    }
+
 
     public abstract Node manifest();
 
@@ -102,7 +122,11 @@ public abstract class AAB extends AbstractPolyglotAdapter {
      * end
      */
 
-    public abstract AndroidIconHash[] icons();
+    public abstract Value icons();
+
+    public List<AndroidIconHash> icons_() {
+        return iterableToList(icons(), AndroidIconHash.class);
+    }
 
     public void clear() {
         Context ctx = getContext();

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static io.github.transfusion.app_info_java_graalvm.AppInfo.Utilities.getResourcesAbsolutePath;
@@ -54,8 +53,8 @@ public class IPATest {
         Assertions.assertArrayEquals(subject.archs(), new String[]{"armv7", "arm64"});
 
         // testing icons start
-        IPAIconHash[] icons = subject.icons_(true);
-        Assertions.assertEquals(0, icons.length);
+        List<IPAIconHash> icons = subject.icons_(true);
+        Assertions.assertEquals(0, icons.size());
 
         Assertions.assertEquals(subject.release_type(), "AdHoc");
         Assertions.assertEquals(subject.build_type(), "AdHoc");
@@ -66,7 +65,7 @@ public class IPATest {
         Assertions.assertEquals(subject.distribution_name(), "iOS Team Provisioning Profile: * - QYER Inc");
 
         Assertions.assertTrue(subject.mobileprovision_question());
-        Assertions.assertEquals(13, subject.mobileprovision().developer_certs().length);
+        Assertions.assertEquals(13, subject.mobileprovision().developer_certs_().size());
 
         Assertions.assertTrue(subject.metadata().isNull());
         Assertions.assertFalse(subject.metadata_question());
@@ -78,8 +77,8 @@ public class IPATest {
         // it { expect(subject.mobileprovision).to be_kind_of AppInfo::MobileProvision }
         // same with this
 
-        Assertions.assertEquals(0, subject.plugins().length);
-        Assertions.assertEquals(0, subject.frameworks().length);
+        Assertions.assertEquals(0, subject.plugins_().size());
+        Assertions.assertEquals(0, subject.frameworks_().size());
 
         subject.clear();
         ctx.close();
@@ -110,9 +109,9 @@ public class IPATest {
         Assertions.assertArrayEquals(subject.archs(), new String[]{"armv7", "arm64"});
 
         // testing icons start
-        IPAIconHash[] icons = subject.icons_(true);
-        Assertions.assertEquals(7, icons.length);
-        IPAIconHash firstIcon = icons[0];
+        List<IPAIconHash> icons = subject.icons_(true);
+        Assertions.assertEquals(7, icons.size());
+        IPAIconHash firstIcon = icons.get(0);
         Assertions.assertArrayEquals(firstIcon.dimensions(), new Long[]{58L, 58L});
         Assertions.assertEquals(firstIcon.name(), "AppIcon29x29@2x~ipad.png");
 
@@ -126,7 +125,7 @@ public class IPATest {
         Assertions.assertEquals(subject.distribution_name(), "XC: * - QYER Inc");
 
         Assertions.assertTrue(subject.mobileprovision_question());
-        Assertions.assertEquals(1, subject.mobileprovision().developer_certs().length);
+        Assertions.assertEquals(1, subject.mobileprovision().developer_certs_().size());
 
         Assertions.assertTrue(subject.metadata().isNull());
         Assertions.assertFalse(subject.metadata_question());
@@ -146,8 +145,8 @@ public class IPATest {
         Assertions.assertEquals(res.asString(), "QYER Inc");
         Assertions.assertEquals(subject.team_name(), "QYER Inc");
 
-        Assertions.assertEquals(0, subject.plugins().length);
-        Assertions.assertEquals(0, subject.frameworks().length);
+        Assertions.assertEquals(0, subject.plugins_().size());
+        Assertions.assertEquals(0, subject.frameworks_().size());
 
         subject.clear();
         ctx.close();
@@ -187,7 +186,7 @@ public class IPATest {
         Assertions.assertNull(subject.devices());
 
         Assertions.assertTrue(subject.mobileprovision_question());
-        Assertions.assertEquals(2, subject.mobileprovision().developer_certs().length);
+        Assertions.assertEquals(2, subject.mobileprovision().developer_certs_().size());
 
         Assertions.assertTrue(subject.metadata().isNull());
         Assertions.assertFalse(subject.metadata_question());
@@ -200,22 +199,22 @@ public class IPATest {
         Value res = hashSubscriptLambda.execute(subject.info().getValue(), "CFBundleVersion");
         Assertions.assertEquals(res.asString(), "1");
 
-        Assertions.assertEquals(1, subject.plugins().length);
+        Assertions.assertEquals(1, subject.plugins_().size());
 
-        Assertions.assertEquals("Notification", subject.plugins()[0].name());
-        Assertions.assertEquals(subject.plugins()[0].release_version(), "1.0");
-        Assertions.assertEquals(subject.plugins()[0].build_version(), "1");
+        Assertions.assertEquals("Notification", subject.plugins_().get(0).name());
+        Assertions.assertEquals(subject.plugins_().get(0).release_version(), "1.0");
+        Assertions.assertEquals(subject.plugins_().get(0).build_version(), "1");
         //     it { expect(subject.plugins[0].info).to be_a AppInfo::InfoPlist }
-        Assertions.assertEquals(subject.plugins()[0].bundle_id(), "com.icyleaf.test.Demo.Notification");
+        Assertions.assertEquals(subject.plugins_().get(0).bundle_id(), "com.icyleaf.test.Demo.Notification");
 
-        Assertions.assertEquals(subject.frameworks().length, 1);
-        Assertions.assertFalse(subject.frameworks()[0].lib_question());
-        Assertions.assertEquals(subject.frameworks()[0].name(), "CarPlay.framework");
-        Assertions.assertNull(subject.frameworks()[0].release_version());
-        Assertions.assertNull(subject.frameworks()[0].build_version());
-        Assertions.assertNull(subject.frameworks()[0].bundle_id());
+        Assertions.assertEquals(subject.frameworks_().size(), 1);
+        Assertions.assertFalse(subject.frameworks_().get(0).lib_question());
+        Assertions.assertEquals(subject.frameworks_().get(0).name(), "CarPlay.framework");
+        Assertions.assertNull(subject.frameworks_().get(0).release_version());
+        Assertions.assertNull(subject.frameworks_().get(0).build_version());
+        Assertions.assertNull(subject.frameworks_().get(0).bundle_id());
 
-        Assertions.assertNull(subject.frameworks()[0].macho_());
+        Assertions.assertNull(subject.frameworks_().get(0).macho_());
 
         subject.clear();
         ctx.close();

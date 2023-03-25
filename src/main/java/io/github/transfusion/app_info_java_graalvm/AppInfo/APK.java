@@ -5,6 +5,11 @@ import io.github.transfusion.app_info_java_graalvm.Android.Manifest;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
 public abstract class APK extends AbstractPolyglotAdapter {
 
     public static APK from(Context polyglot, String path) {
@@ -94,9 +99,17 @@ public abstract class APK extends AbstractPolyglotAdapter {
 
     public abstract String sign_version();
 
-    public abstract APK.Sign[] signs();
+    public abstract Value signs();
 
-    public abstract APK.Certificate[] certificates();
+    public List<Sign> signs_() {
+        return iterableToList(signs(), Sign.class);
+    }
+
+    public abstract Value certificates();
+
+    public List<Certificate> certificates_() {
+        return iterableToList(signs(), Certificate.class);
+    }
 
     /**
      * def activities
@@ -106,15 +119,32 @@ public abstract class APK extends AbstractPolyglotAdapter {
      * @return Android::Manifest::Component as of the time of writing
      * instead of Android::Manifest::Activity
      */
-    public abstract Manifest.Component[] activities();
+    public abstract Value activities();
 
-    public abstract Manifest.Component[] services();
+    public List<Manifest.Component> activities_() {
+        return iterableToList(activities(), Manifest.Component.class);
+    }
 
-    public abstract Manifest.Component[] components();
+
+    public abstract Value services();
+
+    public List<Manifest.Component> services_() {
+        return iterableToList(services(), Manifest.Component.class);
+    }
+
+    public abstract Value components();
+
+    public List<Manifest.Component> components_() {
+        return iterableToList(components(), Manifest.Component.class);
+    }
 
     public abstract io.github.transfusion.app_info_java_graalvm.Android.APK apk();
 
-    public abstract AndroidIconHash[] icons();
+    public abstract Value icons();
+
+    public List<AndroidIconHash> icons_() {
+        return iterableToList(icons(), AndroidIconHash.class);
+    }
 
     public static abstract class Sign extends AbstractPolyglotAdapter {
         public abstract String path();

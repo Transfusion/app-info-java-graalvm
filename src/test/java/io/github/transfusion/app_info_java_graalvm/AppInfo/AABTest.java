@@ -46,7 +46,7 @@ public class AABTest {
         Assertions.assertNotNull(subject.icons());
 
         // own assertions
-        AndroidIconHash firstIcon = subject.icons()[0];
+        AndroidIconHash firstIcon = subject.icons_().get(0);
         Assertions.assertEquals(firstIcon.name(), "ic_launcher.webp");
         Assertions.assertArrayEquals(firstIcon.dimensions(), new Long[]{48L, 48L});
 
@@ -57,15 +57,15 @@ public class AABTest {
         Assertions.assertArrayEquals(subject.deep_links(), new String[]{"icyleaf.com"});
         Assertions.assertArrayEquals(subject.schemes(), new String[]{"appinfo"});
 
-        Assertions.assertEquals(subject.certificates()[0].path(), "META-INF/KEY0.RSA");
+        Assertions.assertEquals(subject.certificates_().get(0).path(), "META-INF/KEY0.RSA");
 
-        Assertions.assertTrue(subject.certificates()[0].certificate().getMember("is_a?").execute(ctx.eval("ruby", "OpenSSL::X509::Certificate")).asBoolean());
+        Assertions.assertTrue(subject.certificates_().get(0).certificate().getMember("is_a?").execute(ctx.eval("ruby", "OpenSSL::X509::Certificate")).asBoolean());
 
-        Assertions.assertEquals(subject.signs()[0].path(), "META-INF/KEY0.RSA");
-        Assertions.assertTrue(subject.signs()[0].sign().getMember("is_a?").execute(ctx.eval("ruby", "OpenSSL::PKCS7")).asBoolean());
+        Assertions.assertEquals(subject.signs_().get(0).path(), "META-INF/KEY0.RSA");
+        Assertions.assertTrue(subject.signs_().get(0).sign().getMember("is_a?").execute(ctx.eval("ruby", "OpenSSL::PKCS7")).asBoolean());
 
-        Assertions.assertEquals(subject.activities().length, 2);
-        Assertions.assertEquals(subject.services().length, 0);
+        Assertions.assertEquals(subject.activities_().size(), 2);
+        Assertions.assertEquals(subject.services_().size(), 0);
         Assertions.assertTrue(subject.components().hasIterator());
 
         Assertions.assertArrayEquals(subject.use_permissions(), new String[]{"android.permission.ACCESS_NETWORK_STATE"});
@@ -84,19 +84,19 @@ public class AABTest {
          * irb(main):218:0> i.manifest.activities[0].intent_filter[0].action[0].name
          * => "android.intent.action.VIEW"
          */
-        List<Node> activities = List.of(subject.activities());
+        List<Node> activities = (subject.activities_());
         Assertions.assertEquals(activities.size(), 2);
 
         Node firstActivity = activities.get(0);
-        List<Node> intentFilters = List.of(firstActivity.getChild("intent_filter"));
+        List<Node> intentFilters = (firstActivity.getChild("intent_filter"));
         Assertions.assertEquals(intentFilters.size(), 2);
 
         Node intentFilter = intentFilters.get(0);
 
         Assertions.assertEquals(intentFilter.children_(), Arrays.asList("action", "category", "data"));
-        Node[] children = intentFilter.getChild("action");
-        Assertions.assertEquals(children.length, 1);
-        Node actionNode = children[0];
+        List<Node> children = intentFilter.getChild("action");
+        Assertions.assertEquals(children.size(), 1);
+        Node actionNode = children.get(0);
         Assertions.assertTrue(actionNode.children_().isEmpty());
         Assertions.assertEquals(actionNode.attributes_(), List.of("name"));
 

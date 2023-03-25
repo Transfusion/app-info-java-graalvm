@@ -54,7 +54,11 @@ public abstract class MobileProvision extends AbstractPolyglotAdapter {
         public abstract ZonedDateTime expired_date();
     }
 
-    public abstract DeveloperCertificate[] developer_certs();
+    public abstract Value developer_certs();
+
+    public List<DeveloperCertificate> developer_certs_() {
+        return iterableToList(developer_certs(), DeveloperCertificate.class);
+    }
 
     public boolean development_question() {
         Context ctx = getContext();

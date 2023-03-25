@@ -36,13 +36,15 @@ public abstract class Node extends AbstractPolyglotAdapter {
      *
      * @return list of {@link Node}, may have a single element
      */
-    public Node[] getChild(String key) {
+    public List<Node> getChild(String key) {
         Value v = getValue().getMember(key).execute();
 
         if (v.getMember("is_a?").execute(getContext().eval("ruby", "Array")).asBoolean()) {
-            return v.as(Node[].class);
+            return iterableToList(v, Node.class);
         } else {
-            return new Node[]{v.as(Node.class)};
+            List<Node> res = new ArrayList<>();
+            res.add(v.as(Node.class));
+            return res;
         }
     }
 
