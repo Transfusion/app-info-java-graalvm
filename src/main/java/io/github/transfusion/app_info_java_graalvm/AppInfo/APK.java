@@ -108,7 +108,7 @@ public abstract class APK extends AbstractPolyglotAdapter {
     public abstract Value certificates();
 
     public List<Certificate> certificates_() {
-        return iterableToList(signs(), Certificate.class);
+        return iterableToList(certificates(), Certificate.class);
     }
 
     /**
